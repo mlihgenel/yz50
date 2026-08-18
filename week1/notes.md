@@ -118,10 +118,12 @@ Dış döngü nöronları gezer (`zip(weight_list, biases)`), çünkü bunlar n�
 Loss, **model tahmini ($\hat{y}$)** ile **gerçek/hedef değer ($y$)** arasındaki farkı ölçer — girdi ($x$) ile değil. Amaç bu farkı küçültecek şekilde parametreleri ($w, b$) güncellemek.
 
 $$
-\text{squared\_error}(\hat{y}, y) = (\hat{y} - y)^2
+L(\hat{y}, y) = (\hat{y} - y)^2
 \qquad\qquad
 \text{MSE} = \frac{1}{n}\sum_{i=1}^{n} (\hat{y}_i - y_i)^2
 $$
+
+($L$ = `squared_error`, MSE = `mse`)
 
 ```python
 def squared_error(y_pred, y_true):
