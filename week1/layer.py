@@ -7,10 +7,10 @@ weights = [
     [0.7, 0.8, 0.9],
 ]
 biases = [-4, 3, 1.5]
-activation = sigmoid
+activation = relu
 
 def layer(inputs: list, weight_list: list[list[float]], biases: list, activation):
-    output: list = []
+    output: list[float] = []
     for weight, bias in zip(weight_list, biases):
         if len(weight) != len(inputs): 
             raise ValueError("Girdi ile ağırlık matrisini boyutları uyuşmalı.")
@@ -18,6 +18,7 @@ def layer(inputs: list, weight_list: list[list[float]], biases: list, activation
     
     return output
         
-# print(layer(input, weights, biases, activation))
+print(layer(input, weights, biases, activation))
 
     
+# 1-> 1*0.1 + 1*0.2 + 1*0.3  +  (-4)

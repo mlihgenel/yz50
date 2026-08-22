@@ -22,13 +22,13 @@ input1 = [0,0]
 input2 = [1,0]
 input3 = [0,1]
 input4 = [1,1]
+
 weights = [1,1]
 bias = -1.5 
 
 
-""" 
-print(neuron(input1, weights, bias, sigmoid))
-print(neuron(input2, weights, bias, sigmoid))
-print(neuron(input3, weights, bias, sigmoid))
-print(neuron(input4, weights, bias, sigmoid))
-"""
+# çıktı -> aktivasyonFonksiyonu(x*w + b)
+print(neuron(input1, weights, bias, relu))
+print(neuron(input2, weights, bias, relu))
+print(neuron(input3, weights, bias, relu))
+print(neuron(input4, weights, bias, relu))

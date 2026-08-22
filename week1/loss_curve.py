@@ -9,7 +9,7 @@ timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 def plot_loss_curve(x: float, bias: float, y_true: float, activation): 
     w_values: list = []
     losses:list  = []
-    for w in arange(-5, 5, 0.1):
+    for w in arange(-10, 10, 0.1): 
         y_hat = neuron([x], [w], bias, activation)
         loss = squared_error(y_hat, y_true)
         w_values.append(w)
@@ -23,4 +23,4 @@ def plot_loss_curve(x: float, bias: float, y_true: float, activation):
     plt.show()
     
 
-plot_loss_curve(x=5, bias=1, y_true=10, activation=sigmoid)
+plot_loss_curve(x=5, bias=-1.5, y_true=-10, activation=relu)
