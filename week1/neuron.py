@@ -26,9 +26,10 @@ input4 = [1,1]
 weights = [1,1]
 bias = -1.5 
 
-
-# çıktı -> aktivasyonFonksiyonu(x*w + b)
-print(neuron(input1, weights, bias, relu))
-print(neuron(input2, weights, bias, relu))
-print(neuron(input3, weights, bias, relu))
-print(neuron(input4, weights, bias, relu))
+if __name__ == "__main__": 
+    # çıktı -> aktivasyonFonksiyonu(x*w + b)
+    print(neuron(input1, weights, bias, relu))
+    print(neuron(input2, weights, bias, relu))
+    print(neuron(input3, weights, bias, relu))
+    print(neuron(input4, weights, bias, relu))
+    
