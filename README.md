@@ -7,3 +7,4 @@
 | Hafta | Konu | Klasör |
 |-------|------|--------|
 | 1 | Neuron, layer, loss, forward pass ve gradient descent'e giriş | [week1/](week1/) |
+| 2 | Value sınıfı, hesap grafiği, zincir kuralı ve backpropagation | [week2/](week2/) |

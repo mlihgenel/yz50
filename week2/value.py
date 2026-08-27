@@ -57,17 +57,17 @@ class Value():
     
     def backward(self):
         self.grad = 1 
-        topo_list = self.topolocigal_sort(self, None, None)
+        topo_list = self.topological_sort(self, None, None)
         for node in topo_list:
             node._backward()
         
-    def topolocigal_sort(self, node, visited = None, topo = None):
+    def topological_sort(self, node, visited = None, topo = None):
         if visited is None: visited = set()
         if topo is None: topo = []
         if node not in visited: 
             visited.add(node)
             for child in node.children:
-                self.topolocigal_sort(child, visited, topo)
+                self.topological_sort(child, visited, topo)
             topo.append(node)
         return list(reversed(topo))
         
@@ -79,7 +79,18 @@ class Value():
     
     def __sub__(self, other):
          return self + (-other)
- 
+     
+    def __radd__(self, other):
+        return self + other 
+    
+    def __rmul__(self, other):
+        return self * other 
+    
+    def __rsub__(self, other):
+        return  -self + other 
+    
+    def __rtruediv__(self, other):
+        return self ** (-1) * other 
 
 def numerical_derivative(x): 
     h = 1e-6
