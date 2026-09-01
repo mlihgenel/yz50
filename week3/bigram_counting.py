@@ -55,10 +55,3 @@ def plot_bigram_table(N, itos):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     plt.savefig(f"plots/bigram_table_{timestamp}.png")
     plt.show()
-
-
-if __name__ == "__main__":
-    words = read_names("names.txt")
-    stoi, itos = build_vocab(words)
-    N = count_bigrams_tensor(words, stoi)
-    # plot_bigram_table(N, itos)
