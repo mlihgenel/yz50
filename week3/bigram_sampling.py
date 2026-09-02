@@ -2,6 +2,7 @@ import torch
 
 # her satır için olsaılık hesaplama işlemi yapıyoruz.
 def build_probabilities(N): 
+    N = N + 1 # (N+1) ile. birlikte aslında tüm olasılıkları 0'dan başlatıyoruz. NLL'de hesaplama sorunu çıkarmaması için
     row_sum = N.sum(dim=1, keepdim=True)
     probability = N.float() / row_sum 
     return probability
