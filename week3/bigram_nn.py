@@ -1,6 +1,5 @@
 import torch
 
-
 def build_encoded_dataset(words, stoi):
     xs, ys = [], []
     for w in words:

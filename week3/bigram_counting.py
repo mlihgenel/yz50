@@ -29,7 +29,7 @@ def count_bigrams_dict(words):
             
 # ardışık ikilileri(bigramları) bu sefer sözlük yerine torch nesnesinde topluyoruz
 def count_bigrams_tensor(words, stoi):
-    N = torch.zeros((27, 27), dtype=torch.int32) # 27'ye 27'lik torch nesnesi oluşturuyoruz.
+    N = torch.zeros((len(stoi), len(stoi)), dtype=torch.int32) # 27'ye 27'lik torch nesnesi oluşturuyoruz.
     for w in words: 
         chs = ['.'] + list(w) + ['.']
         for ch1, ch2 in zip(chs, chs[1:]):
