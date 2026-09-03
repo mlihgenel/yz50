@@ -8,3 +8,4 @@
 |-------|------|--------|
 | 1 | Neuron, layer, loss, forward pass ve gradient descent'e giriş | [week1/](week1/) |
 | 2 | Value sınıfı, hesap grafiği, zincir kuralı ve backpropagation | [week2/](week2/) |
+| 3 | Bigram karakter dil modeli (sayarak + tek katmanlı NN), trigram | [week3/](week3/) |
