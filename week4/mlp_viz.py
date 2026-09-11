@@ -47,3 +47,21 @@ def plot_embeddings(C, itos):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     plt.savefig(f"plots/embeddings_{timestamp}.png")
     plt.show()
+
+# tanh çıkışının (h) histogramını çizer.
+# değerler +-1'e yığılıyorsa saturation var demektir; |h| > 0.99 oranı konsola basılır.
+def plot_tanh_saturation(h):
+    h_flat = h.detach().view(-1)
+    saturated_ratio = (h_flat.abs() > 0.99).float().mean().item()
+    print(f"saturated (|h| > 0.99) ratio: {saturated_ratio:.4f}")
+
+    plt.figure(figsize=(8, 6))
+    plt.hist(h_flat.tolist(), bins=50)
+    plt.xlabel("h value")
+    plt.ylabel("count")
+    plt.title(f"Tanh Output Histogram (saturated ratio: {saturated_ratio:.2%})")
+
+    os.makedirs("plots", exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    plt.savefig(f"plots/tanh_saturation_{timestamp}.png")
+    plt.show()

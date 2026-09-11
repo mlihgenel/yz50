@@ -2,11 +2,11 @@ import matplotlib.pylab as plt
 import torch
 import torch.nn.functional as F
 from mlp_dataset import read_names, build_vocab, build_dataset, split_dataset
-from mlp_model import init_embedding, init_weights, forward, sample_name
-from mlp_viz import plot_embeddings, plot_lr_search, plot_lr_schedule
+from mlp_model import init_embedding, init_weights, init_batchnorm, forward, sample_name
+from mlp_viz import plot_embeddings, plot_lr_search, plot_lr_schedule, plot_tanh_saturation
 from mlp_lr_scheduler import warmup_cosine_lr
 
-TOTAL_STEPS = 30000
+TOTAL_STEPS = 200000
 WARMUP_STEPS = 200 
 LR_MAX = 0.1
 BLOCK_SIZE = 3
@@ -71,29 +71,35 @@ X_batch, Y_batch = X_train[:32], Y_train[:32]
     
 C = init_embedding(VOCAB_SIZE, EMB_DIM, generator)
 W1, b1, W2, b2 = init_weights(BLOCK_SIZE, EMB_DIM, HIDDEN_SIZE, VOCAB_SIZE, generator)
-parameters = [C, W1, b1, W2, b2]
+bngain, bnbias, running_mean, running_var = init_batchnorm(HIDDEN_SIZE)
+parameters = [C, W1, b1, W2, b2, bngain, bnbias]
+for p in parameters: 
+    p.requires_grad = True
+    
+# _, h_init = forward(X_batch, C, W1, b1, W2, b2)
+# plot_tanh_saturation(h_init)
 
 for step in range(TOTAL_STEPS):
     ix = torch.randint(0, X_train.shape[0], (32, ), generator=generator)
-    logits = forward(X_train[ix], C, W1, b1, W2, b2)
+    logits, h = forward(X_train[ix], C, W1, b1, W2, b2, bngain, bnbias, running_mean, running_var, training=True)
     loss = F.cross_entropy(logits, Y_train[ix])
-    
-    for p in parameters: 
-        p.grad = None 
+
+    for p in parameters:
+        p.grad = None
     loss.backward()
-    
+
     lr = warmup_cosine_lr(step, TOTAL_STEPS, LR_MAX, WARMUP_STEPS)
-    for p in parameters: 
+    for p in parameters:
         p.data += -lr * p.grad
-        
-    if step % 1000 == 0:
+
+    if step % 10000 == 0:
         print(f"step: {step}, loss: {loss.item()}, lr: {lr}")
-        
+
 with torch.no_grad():
-    logits_dev = forward(X_dev, C, W1, b1, W2, b2)
+    logits_dev, h_dev = forward(X_dev, C, W1, b1, W2, b2, bngain, bnbias, running_mean, running_var, training=False)
     dev_loss = F.cross_entropy(logits_dev, Y_dev)
-    print("dev loss: ", dev_loss.item())
-    
-plot_embeddings(C, itos)
-names = sample_name(C, W1, b1, W2, b2, itos, BLOCK_SIZE, generator=generator, word_num=5)
-print(names)
+    print("dev loss (BN): ", dev_loss.item())
+
+# plot_embeddings(C, itos)
+# names = sample_name(C, W1, b1, W2, b2, bngain, bnbias, running_mean, running_var, itos, BLOCK_SIZE, generator=generator, word_num=5)
+# print(names)
