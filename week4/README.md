@@ -25,6 +25,7 @@ Bu hafta çözülen 8 görev, iki videoya karşılık geliyor:
 | `mlp_viz.py` | `plot_lr_search`, `plot_lr_schedule`, `plot_embeddings`, `plot_tanh_saturation` |
 | `main.py` | eğitim akışı — en iyi bulunan konfigürasyonu koşturur, `split_loss` ile train/dev ölçer |
 | `experiments.py` | tek seferlik deney/teşhis komutları (`train`, `lr_search`, `lr_schedule`, `tanh`, `embeddings`) — haftanın **başlangıç** hiperparametrelerini dondurur |
+| `turkish_mlp.py` | görev 7 — `main.py`'nin Türkçe veri için ayrı ayarlanmış kopyası |
 | `names.txt`, `turkish_names.txt` | week3'ten kopyalandı |
 
 ---
@@ -426,7 +427,8 @@ Fonksiyon `forward`'a bağlanmadan önce tek başına doğrulandı: `training=Fa
 | Normalizasyon | — | BatchNorm (running stats) |
 | Regularizasyon | L2 (`reg_strength`) | dropout |
 | Harfler arası benzerlik | yok (hepsi eşit uzaklıkta) | embedding uzayında kümelenme |
-| En iyi dev loss (İngilizce) | 2.41 (trigram) | **1.9955** |
+| En iyi loss (İngilizce) | 2.346 (trigram) | **1.9955** |
+| En iyi loss (Türkçe) | 2.2221 (trigram) | **2.0238** |
 
 ---
 
@@ -473,3 +475,111 @@ Fonksiyon `forward`'a bağlanmadan önce tek başına doğrulandı: `training=Fa
 
 Son sütun, 3 karakterlik bağlamı tamamen ezberleyen bir modelin aynı veri üzerindeki loss'u. Türkçe sette 1.47 çünkü 23k token içinde bağlamların çoğu neredeyse benzersiz. Yani **küçük veri setinde düşük train loss başarı değil, ezber.** Türkçe sonuçları raporlarken train loss değil dev loss yazılmalı ve bigram baseline (2.417) referans alınmalı; bölüm 7'deki makas, orada çok daha erken ve çok daha geniş açılacak.
 
+
+---
+
+## 10. Türkçe isimlerle aynı model (`turkish_mlp.py`)
+
+Görev 7: week3'teki `turkish_names.py` deseninin aynısı — `turkish_mlp.py`, `main.py`'nin bağımsız bir kopyası, hiperparametreler tepesinde. Model kodunun (`mlp_model.py`, `mlp_dataset.py`) **tek satırına** dokunulmadı; `build_vocab` alfabeyi veriden çıkardığı için Türkçe karakterler kendiliğinden alfabeye girdi.
+
+| | kelime | token | vocab | alfabe farkı |
+|---|---|---|---|---|
+| `names.txt` | 32.033 | 228.146 | 27 | — |
+| `turkish_names.txt` | 3.329 | **23.024** | 30 | `q w x` yok, `ç ö ü ğ ı ş` var |
+
+**10 kat az veri.** Bu haftanın Türkçe bölümü baştan sona bu tek cümlenin sonuçlarıyla uğraşmaktan ibaret.
+
+### 10.1 Başlangıç loss'u artık `ln(27)` değil
+
+İlk koşunun ilk satırı `batch_loss: 3.3981` verdi. Görev 5'te İngilizce için beklenen sayı 3.30'du; burada beklenen değer değişir çünkü loss'un hedefi **uniform dağılım**, o da vocab'a bağlı:
+
+| vocab | beklenen başlangıç loss |
+|---|---|
+| 27 | `ln(27)` = 3.2958 |
+| 30 | `ln(30)` = **3.4012** |
+
+Gözlenen 3.3981, üç ondalık basamak uyuyor. Fark küçük görünüyor (0.105) çünkü vocab **çarpımsal** büyürken loss **toplamsal** tepki veriyor: `ln(30/27) = 0.105`. Vocab ikiye katlansa loss sadece `ln 2 = 0.69` artardı. Ölçeği doğru görmek için perplexity'ye çevirmek gerekiyor: `exp(3.3981) = 29.9` — yani "model 30 seçenek arasından rastgele tahmin ediyor."
+
+Bu sayının tutması bir tesadüf değil, görev 5'teki init'in doğruluk testi: `W2 * 0.01` ve `b2 * 0` logits'i sıfıra yakın tutuyor, softmax de düzleşiyor. Ham `randn` init'te (bölüm 5.1) loss ~24.9'du. Vocab değiştiğinde beklenen değer de değiştiği için karşılaştırma ezberden değil `math.log(len(stoi))`'den yapılmalı.
+
+### 10.2 Ayarsız koşu: kontrolsüz baseline
+
+İlk deneme bilinçli olarak "sadece dosya adını değiştir" oldu — `main.py`'nin İngilizce için optimize edilmiş konfigürasyonu (`block=8, emb=24, hidden=300, batch=128, 150k adım`) Türkçe veriye olduğu gibi uygulandı.
+
+```
+train loss: 1.2311   dev loss: 2.0769   makas: 0.8457
+```
+
+Train loss İngilizce koşudan **daha düşük** (1.23 vs ~1.61), 10 kat az veriyle. Ezberin imzası tam olarak bu: model daha az şey öğrenip daha iyi hatırlıyor. İkinci kanıt eğitim log'unda — dev loss 130k adımda 2.0759, 150k'da 2.0769. Düzleşmiş, hatta hafif yukarı; train ise hâlâ düşüyor.
+
+### 10.3 Asıl suçlu: sabit adım bütçesi = değişken epoch sayısı
+
+Ezberin sebebi ilk bakışta kapasite gibi görünüyor, ama en büyük pay başka yerde. `TOTAL_STEPS` ve `BATCH_SIZE` sabit tutulup veri 10'a bölününce **epoch sayısı** 10 katına çıkıyor:
+
+| koşu | hesap | epoch |
+|---|---|---|
+| İngilizce `main.py` | 150.000 × 128 / 182.517 | 105 |
+| Türkçe, ayarsız | 150.000 × 128 / 18.419 | **1.042** |
+
+Hiçbir hiperparametreye dokunmadan, sırf dosya adı değiştirilerek 1.042 epoch eğitim yapılmış. Bölüm 7.4'teki "adım sayısı da bir regularizasyon parametresi" tespitinin en sert hali: **adım sayısı veri boyutundan bağımsız bir sayı değil.** Farklı boyuttaki iki veri setini karşılaştırırken eşitlenmesi gereken şey adım değil epoch.
+
+### 10.4 Kapasite: parametre / örnek oranı
+
+İkinci pay kapasitede. `W1 = block_size × emb_dim × hidden_size` olduğu için üç sabit çarpımlı davranıyor ve `BLOCK_SIZE` en ucuz kesme noktası:
+
+| konfigürasyon | `W1` | toplam param | param / örnek |
+|---|---|---|---|
+| 8/24/300 (ayarsız) | 57.600 | 68.250 | **3.71** |
+| 3/24/300 | 21.600 | 32.250 | 1.75 |
+| **3/10/300 (final)** | 9.000 | **19.230** | 1.04 |
+| 3/8/100 | 2.400 | 5.970 | 0.32 |
+
+Ayarsız koşuda parametre sayısı eğitim örneği sayısının 3,7 katı. İngilizce'de aynı model 182k örnek görüyordu, yani oran tersti.
+
+`EMB_DIM = 24`'ün ayrı bir sorunu daha var: alfabe 30 sembol, 24 boyuta gömmek sıkıştırma sayılmaz. Embedding'in genelleme üretmesinin sebebi **darboğaz** — model 30 harfi az sayıda boyuta sığdırmak zorunda kalınca benzer davranan harfleri (sesliler, `ç/c`, `ğ/g`) birbirine yaklaştırmaya mecbur kalıyor. 24'te bu baskı yok, her harf kendi köşesinde durabiliyor.
+
+### 10.5 Final konfigürasyon
+
+```python
+TOTAL_STEPS = 30000    # 150k'dan: epoch 1042 -> 208
+BLOCK_SIZE  = 3        # 8'den: W1'i 57.600 -> 9.000
+EMB_DIM     = 10       # 24'ten: embedding'e darboğaz geri geldi
+HIDDEN_SIZE = 300
+BATCH_SIZE  = 128
+DROPOUT_P   = 0.2
+```
+
+| koşu | train | dev | makas |
+|---|---|---|---|
+| ayarsız (8/24/300, 150k) | 1.2311 | 2.0769 | 0.8457 |
+| **final (3/10/300, 30k)** | 1.8706 | **2.0358** | **0.1653** |
+
+Train loss **yükseldi**, dev **düştü**. Regularizasyonun tanımı bu: modeli eğitim verisinde kötüleştirip gerçek veride iyileştirmek. Makas 0.85 → 0.165, yani İngilizce koşunun bandının (0.16–0.386) alt ucu.
+
+Tüm kararlar bittikten sonra test setine **bir kez** bakıldı:
+
+```
+test loss: 2.0238
+```
+
+Test, dev'den (2.0358) düşük. Yani ~330 kelimelik küçük dev setine aşırı uyum yapılmamış; 0.012'lik fark bu boyutta gürültü seviyesinde. Raporlanan sayı **2.0238**.
+
+> Not: final konfigürasyona geçerken üç sabit aynı anda değişti (`steps`, `block_size`, `emb_dim`). İyileşmenin hangi eksenden ne kadar geldiği bu yüzden ayrıştırılmış değil — bölüm 6'daki BN ölçümüyle aynı kusur.
+
+### 10.6 Week3 ile karşılaştırma
+
+| model | Türkçe | İngilizce |
+|---|---|---|
+| Bigram (sayarak) | 2.4165 | ~2.4 |
+| Bigram (NN) | 2.4422 | 2.461 |
+| Trigram (NN) | 2.2221 | 2.346 |
+| **MLP** | **2.0238** | 1.9955 |
+
+Üretilen isimler: `sümeye`, `rem`, `hezel`, `tuliye`, `fatıla`. Week3 bigram'ın `keliyarelercğna`'sı ya da trigram'ın `ferzafediyeli`'siyle arada gözle görülür fark var — ünlü uyumu çoğunlukla tutuyor, `ı`/`ü` yerli yerinde, hece yapısı Türkçe.
+
+Asıl bulgu satırlarda değil **sütunları karşılaştırınca** çıkıyor:
+
+- **Week3'te Türkçe İngilizce'den kolaydı** (trigram: 2.2221 < 2.346). Beklenen bir sonuç — ünlü uyumu ve düzenli hece yapısı, sayıma dayalı bir modelin işini kolaylaştırıyor.
+- **Week4'te bu tersine döndü** (2.0238 > 1.9955). Türkçe hâlâ aynı düzenli dil; değişen tek şey MLP'nin İngilizce'de 10 kat veri görmesi.
+
+Yani: **sayım modelleri dilin düzenliliğine bağımlı, öğrenen modeller veri miktarına.** Yeterli kapasitesi olan bir model, dilin yapısal düzenliliğinden gelen avantajı veriyle kapatıp geçiyor. Türkçe setin 2.0238'i modelin sınırı değil, 23k token'ın sınırı.
