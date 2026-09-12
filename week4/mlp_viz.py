@@ -36,6 +36,13 @@ def plot_lr_schedule(schedule_fn, total_steps):
 # 2 boyutlu embedding tablosunu (C) düzlemde noktalar olarak çizer.
 # emb_dim mutlaka 2 olmalı - her harf tek bir (x, y) noktasına karşılık gelir.
 def plot_embeddings(C, itos):
+    if C.shape[1] != 2:
+        print(
+            f"plot_embeddings atlandi: emb_dim={C.shape[1]}, bu grafik sadece emb_dim=2 icin anlamli. "
+            f"{C.shape[1]} boyutlu uzayin ilk iki ekseni rastgele bir kesit olur, yanlis okunur."
+        )
+        return
+
     plt.figure(figsize=(8, 8))
     plt.scatter(C[:, 0].data, C[:, 1].data, s=200)
     for i in range(C.shape[0]):

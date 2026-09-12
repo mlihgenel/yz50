@@ -20,7 +20,7 @@ def init_batchnorm(hidden_size):
     running_var = torch.ones((1, hidden_size))
     return bngain, bnbias, running_mean, running_var
 
-def forward(X, C, W1, b1, W2, b2, bngain, bnbias, running_mean, running_var, training, eps=1e-5, momentum=0.001):
+def forward(X, C, W1, b1, W2, b2, bngain, bnbias, running_mean, running_var, training, dropout_p=0.0, generator=None, eps=1e-5, momentum=0.001):
     emb = C[X]
     emb_flat = emb.view(emb.shape[0], -1)
     hpreact = emb_flat @ W1 + b1
@@ -37,8 +37,16 @@ def forward(X, C, W1, b1, W2, b2, bngain, bnbias, running_mean, running_var, tra
 
     hpreact_norm = bngain * (hpreact - bnmean) / torch.sqrt(bnvar + eps) + bnbias
     h = torch.tanh(hpreact_norm)
-    logits = h @ W2 + b2
+    h_drop = dropout(h, dropout_p, training, generator)
+    logits = h_drop @ W2 + b2
     return logits, h
+
+def dropout(h, p, training, generator=None):
+    if not training or p == 0:
+        return h 
+    h_mask = torch.rand(h.shape, generator=generator)
+    keep = (h_mask > p).float()
+    return h * keep / (1 - p)
 
 def sample_name(C, W1, b1, W2, b2, bngain, bnbias, running_mean, running_var, itos, block_size, generator, word_num=5):
     names = []
