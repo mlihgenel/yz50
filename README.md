@@ -10,3 +10,4 @@
 | 2 | Value sınıfı, hesap grafiği, zincir kuralı ve backpropagation | [week2/](week2/) |
 | 3 | Bigram karakter dil modeli (sayarak + tek katmanlı NN), trigram | [week3/](week3/) |
 | 4 | MLP karakter dil modeli: embedding, gizli katman, Kaiming init, BatchNorm, dropout | [week4/](week4/) |
+| 5 | Backprop Ninja: cross entropy ve BatchNorm dahil gradient'leri elle hesaplamak | [week5/](week5/) |
