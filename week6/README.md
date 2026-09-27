@@ -38,6 +38,7 @@ Bu hafta çözülen görevler:
 | `main.py` | konfigürasyon, `ARCH` anahtarı (`"flat"` / `"wavenet"`), eğitim döngüsü, `set_training`, `split_loss`, `sample_name`, katman şekillerinin yazdırılması |
 | `turkish_wavenet.py` | görev 6: `main.py`'nin Türkçe kopyası; epoch sayısı ve ezber ölçümü ekli |
 | `viz.py` | `plot_loss`: 1000 adımlık ortalamayla loss eğrisi |
+| `arch_viz.py` | model mimarisini çizer: betiği `model = ...` satırına kadar çalıştırır, `plots/arch_<betik>_<ARCH>.png` kaydeder |
 | `plots/` | koşuların loss eğrileri |
 | `names.txt`, `turkish_names.txt` | isim listeleri |
 
@@ -56,6 +57,10 @@ Her katman aynı arayüze sahip: `__call__(x)` çıktıyı hesaplar, `self.out`'
 | `Flatten` | yok | `[]` | `(B, T, C) → (B, T*C)` |
 | `FlattenConsecutive(n)` | `n` | `[]` | `(B, T, C) → (B, T/n, C*n)`; `T/n = 1` ise o boyut atılır |
 | `Sequential(layers)` | `layers` | tüm katmanların parametreleri, düz liste | |
+
+Görev 1'deki model, bağlam 3 düz MLP (emb 10, hidden 200, 12,097 parametre). Her kutunun solunda parametre sayısı, sağında ilk batch'teki çıktı şekli:
+
+![bağlam 3 düz MLP mimarisi](plots/arch_flat_ctx3.png)
 
 ### 1.1 Constructor argümanı mı, durum mu?
 
@@ -117,6 +122,10 @@ Adım başına loss 32 örnekten geldiği için çok gürültülü; ham çizim k
 
 Sorun: bu 10,000 parametre 8 harfin **hepsini tek adımda** 200 nörona karıştırıyor. Görev 3 bunu sorguluyor.
 
+Bağlam 8 düz MLP (22,097 parametre): 8 harfin embedding'i tek `Flatten` ile 80'lik vektöre dönüşüp tek `Linear`'a giriyor.
+
+![bağlam 8 düz MLP mimarisi](plots/arch_flat_ctx8.png)
+
 ---
 
 ## 3. WaveNet (görev 3)
@@ -128,6 +137,10 @@ WaveNet:   (he)(ll)(ow)(or) →  (hell)(owor)  →  (helloworr)
 ```
 
 Her blok `FlattenConsecutive(2) → Linear(bias yok) → BatchNorm1d → Tanh`. Üç blokta 8 → 4 → 2 → 1. Videodaki boyutlar (emb 10, hidden 68) ile **22,397 parametre**, düz modelin 22,097'sine denk.
+
+Küçük WaveNet (emb 10, hidden 68; görev 3 ve 4'teki model). BN hatası mimaride değil, BN'nin içinde; iki koşunun çizimi aynı:
+
+![küçük WaveNet mimarisi](plots/arch_wavenet_kucuk.png)
 
 ### 3.1 Katman şekilleri
 
@@ -150,13 +163,15 @@ Tanh                : (32, 128)
 Linear              : (32, 27)
 ```
 
-<!-- Görev 3 şekillerin nedenini "kendi cümlelerinle" yazmanı istiyor. Aşağıdaki açıklamayı kendi ifadenle değiştir. -->
-
 **Ortadaki boyut (8 → 4 → 2 → yok):** her `FlattenConsecutive(2)` komşu iki grubu birleştiriyor, grup sayısı yarıya iniyor. 1'e indiğinde o boyut atılıyor ve tensör düz MLP'deki gibi `(B, C)` oluyor.
 
 **Son boyut (24 → 48 → 128 → 256 → 128 → 256 → 128 → 27):** `FlattenConsecutive` iki vektörü yan yana eklediği için kanal sayısını ikiye katlıyor. `Linear` ise onu tekrar `HIDDEN_SIZE`'a indiriyor. İlk blokta birleşen şey iki harfin embedding'i (2 × 24), sonrakilerde iki gizli vektör (2 × 128).
 
 **Linear 3 boyutlu girdide nasıl çalışıyor:** `(32, 4, 48) @ (48, 128)` sonucu `(32, 4, 128)`. `@` son boyutta çarpıyor, öndeki boyutları batch gibi taşıyor. `Linear` sınıfı hiç değişmedi. Önemli sonucu: **4 grubun hepsine aynı ağırlıklar uygulanıyor.** (h,e) çiftini işleyen matris (l,l) çiftini de işliyor. WaveNet'in az parametreyle çalışmasının nedeni bu paylaşım: 8 harfin her konumu için ayrı ağırlık yok, "iki şeyi birleştir" işlemi için tek bir ağırlık var.
+
+Yukarıdaki şekillerin çizimi, büyütülmüş WaveNet (emb 24, hidden 128, 76,579 parametre):
+
+![büyük WaveNet mimarisi](plots/arch_wavenet_buyuk.png)
 
 ### 3.2 `FlattenConsecutive` neden `view` ile çalışıyor
 
@@ -232,6 +247,7 @@ Düzeltme dev'i **0.0074** düşürdü; videodaki fark 0.007. Init ve batch sır
 ## 5. Büyütme ve üç satırlık tablo (görev 5)
 
 WaveNet emb 24, hidden 128 ile büyütüldü. Diğer iki satır görev 1 ve 2'deki modeller.
+Büyük WaveNet'in mimari çizimi 3.1'de.
 
 | model | parametre | dev loss |
 |---|---|---|
@@ -277,6 +293,14 @@ Kapasite arttıkça makas açılıyor; düzenlileştirme yok. Hafta 4'teki desen
 - **Ezber ölçümü.** Model 200 isim üretiyor ve kaçının train setinde birebir bulunduğunu sayıyor. Hafta 4'te önerilip yapılmayan ölçüm.
 - vocab 30 (ç, ğ, ı, ö, ş, ü dahil, q/w/x yok), bu yüzden son katman 30 logit.
 
+6.1 tablosundaki üç Türkçe model (vocab 30 olduğu için Embedding 30 satır, son Linear 30 çıkış). `turkish_wavenet.py`'de Dropout her `Tanh`'tan sonra duruyor, `DROPOUT_P = 0` olduğu için etkisiz:
+
+![Türkçe düz MLP, bağlam 3 mimarisi](plots/arch_tr_flat_ctx3.png)
+
+![Türkçe küçük WaveNet mimarisi](plots/arch_tr_wavenet_kucuk.png)
+
+![Türkçe büyük WaveNet mimarisi](plots/arch_tr_wavenet_buyuk.png)
+
 ### 6.1 Sonuçlar
 
 | model | parametre | adım | epoch | train | dev | makas | train'den kopya |
@@ -290,8 +314,6 @@ Kapasite arttıkça makas açılıyor; düzenlileştirme yok. Hafta 4'teki desen
 Örnekler (büyük WaveNet, 20k): `ercan`, `haşmet`, `neriman`, `gürkan`, `ümmiye`, `zümriye`, `leylo`, `şahizah`, `birşad`, `ruhsine`. Çok Türkçe görünüyor, ama yarısından fazlası train setinden birebir kopya.
 
 ### 6.2 Bağlam 8 Türkçe'de ne kazandırdı
-
-<!-- Görev 6 bu sorunun cevabını senin yazmanı istiyor. Aşağıdaki gözlemleri kendi cümlelerinle yorumla. -->
 
 **Kazandırmadı.** Gözlemler:
 
@@ -353,16 +375,81 @@ Test setine bu hafta bakılmadı; hiperparametre kararları (7c) bitince bir kez
 
 | sabit | varsayılan | anlamı |
 |---|---|---|
-| `DROPOUT_P` | `0.0` | her `Tanh`'tan sonra bir `Dropout` katmanı |
-| `LR_SCHEDULE` | `"step"` | `"step"`: LR → LR_DECAYED; `"warmup_cosine"`: hafta 4'teki scheduler |
+| `DROPOUT_P` | `0.0` | `Dropout` katmanının oranı (konumu aşağıda) |
+| `LR_SCHEDULE` | `"step"` (görev 7c'den beri `main.py`'de `"warmup_cosine"`) | `"step"`: LR → LR_DECAYED; `"warmup_cosine"`: hafta 4'teki scheduler |
 | `WARMUP_STEPS` | 200 | sadece `warmup_cosine` |
 | `LR_MIN` | 0.0 | sadece `warmup_cosine` |
 
 - **`Dropout` bir katman.** Hafta 4'te `dropout(h, p, training)` fonksiyonuydu; şimdi `training` alanı olan bir sınıf, `set_training` onu da kapsıyor. Inverted dropout: eğitimde kalan nöronlar `1/(1-p)` ile büyütülüyor, tahmin kipinde hiçbir şey yapmıyor.
 - **p = 0 iken rastgele sayı çekmiyor.** Yoksa global RNG kayar, sonraki batch'ler farklı olur ve eski koşular tekrarlanamazdı. Doğrulama: 2000 adımlık koşu, eklemelerden önce ve sonra train 2.2368 / dev 2.2406, birebir aynı.
-- **Konum:** WaveNet'te üç blokun her birinin sonunda, düz MLP'de çıkış katmanından önce.
+- **Konum:** düz MLP'de çıkış katmanından önce. WaveNet'te ilk başta üç blokun her birinin sonundaydı; görev 7c'de BatchNorm ile çatıştığı görülünce `main.py`'de sadece son `Linear`'ın önüne alındı (bkz. 10.2). `turkish_wavenet.py`'de hâlâ her blokta.
 - **`get_lr(step)`** eğitim döngüsündeki tek satırı seçilen stratejiye yönlendiriyor.
 
 ## 10. Görev 7 (ek)
 
-Henüz yapılmadı. Seçenekler: (a) `torch.nn.Conv1d` ile dilated causal convolution, (b) konfigürasyon listesinden deney düzeneği, (c) Karpathy'nin 1.993'ünü geçmek.
+Seçenekler: (a) `torch.nn.Conv1d` ile dilated causal convolution, (b) konfigürasyon listesinden deney düzeneği, (c) Karpathy'nin 1.993'ünü geçmek. **Seçilen: (c).**
+
+Bütün koşular: İngilizce isimler, WaveNet, `EMB_DIM` 24, 200k adım, `warmup_cosine` (warmup 200, LR 0.1 → 0). Koşular `main.py`'nin scratchpad kopyalarında sadece `DROPOUT_P` / `HIDDEN_SIZE` değiştirilerek yapıldı.
+
+### 10.1 Sadece scheduler
+
+Görev 5'teki büyük WaveNet (76,579 parametre), `step` yerine `warmup_cosine` ile: dev **1.9876 → 1.9806**. Dropout olmadan bile 1.993 geçildi. Makas hâlâ 0.218, yani ezber duruyor; sıradaki adım dropout.
+
+### 10.2 Dropout her blokta: zarar veriyor
+
+![büyük WaveNet, her Tanh'tan sonra dropout](plots/arch_wavenet_buyuk_dropout_her_tanh.png)
+
+| p | train | dev | makas |
+|---|---|---|---|
+| 0.0 | 1.7628 | **1.9806** | 0.218 |
+| 0.1 | 1.9219 | 1.9960 | 0.074 |
+| 0.2 | 2.0075 | 2.0443 | 0.037 |
+| 0.3 | 2.0629 | 2.0849 | 0.022 |
+
+Makas kapanıyor ama train loss, dev'den hızlı yükseliyor: model ezberden kurtulmuyor, öğrenemiyor. Hafta 4'te dropout 0.2 işe yaramıştı; fark burada her dropout'un arkasından `Linear → BatchNorm1d` gelmesi.
+
+**Neden:** inverted dropout `1/(1-p)` ile **ortalamayı** korur ama **varyansı** korumaz. Bir aktivasyon `x` için eğitimde çıktı olasılık `1-p` ile `x/(1-p)`, yoksa 0; ikinci moment `x²/(1-p)`, yani varyans büyür. BatchNorm eğitimde bu şişkin varyansı `running_var`'a yazar. Eval'de dropout kapanır, gelen varyans daha küçüktür ama BN hâlâ eğitimdeki istatistikle böler → aktivasyonlar olması gerekenden küçük ölçeklenir. Bu yüzden train ve eval'de ağ aslında farklı bir fonksiyon hesaplıyor.
+
+### 10.3 Dropout sadece son Linear'dan önce
+
+Hipotezi sınamak için tek değişken değişti: ilk iki blokun dropout'u silindi, üçüncü blokunki kaldı (arkasında BN yok, doğrudan çıkış katmanı var). Düz MLP'deki dropout zaten bu konumdaydı.
+
+![büyük WaveNet, dropout sadece son Linear'dan önce](plots/arch_wavenet_buyuk_dropout_son.png)
+
+| p | her blokta: dev / makas | sadece sonda: dev / makas |
+|---|---|---|
+| 0.1 | 1.9960 / 0.074 | **1.9808** / 0.153 |
+| 0.2 | 2.0443 / 0.037 | 1.9924 / 0.139 |
+| 0.3 | 2.0849 / 0.022 | 1.9954 / 0.128 |
+
+p = 0.3'te dev 2.0849 → 1.9954: asıl zararı BN'in önündeki dropout'lar veriyormuş, hipotez destek buldu. Ama p = 0.1 bile dropout'suz koşuyu (1.9806) geçmiyor. Makas azalıyor, dev düşmüyor: bu boyutta sorun ezberden çok kapasite.
+
+### 10.4 Kapasiteyi artırıp dropout
+
+Dropout kapasiteyi yiyorsa önce kapasite verilmeli: `HIDDEN_SIZE` 128 → 256 (283,555 parametre, ~3.7 kat).
+
+![WaveNet hidden 256, dropout son Linear'dan önce](plots/arch_wavenet_h256_dropout01.png)
+
+| p | train | dev | makas |
+|---|---|---|---|
+| 0.0 | 1.6582 | 1.9949 | 0.337 |
+| 0.1 | 1.7342 | 1.9773 | 0.243 |
+| 0.2 | 1.7611 | **1.9758** | 0.215 |
+| 0.3 | 1.7720 | 1.9817 | 0.210 |
+
+- Dropout'suz büyük model **daha kötü** (1.9949 > 1.9806): kapasite arttı, makas 0.337'ye çıktı, fazlası ezbere gitti.
+- Dropout eklenince aynı kapasite işe yarıyor: p = 0.2 ile **1.9758**, haftanın en iyi dev loss'u (Karpathy 1.993).
+- Kapasite ve düzenlileştirme birlikte çalışıyor: biri tek başına kazandırmıyor.
+- p = 0.3 geri kötüleşiyor (1.9817): makas neredeyse hiç kapanmıyor (0.215 → 0.210), sadece train loss yükseliyor. Dropout'un faydası p = 0.2 civarında tükeniyor. p 0.1 ile 0.3 arasındaki farklar (~0.006) tek tohumlu koşularda gürültü seviyesine yakın; p = 0.1 ve 0.2 pratikte berabere.
+
+![hidden 256, p 0.2 loss eğrisi](plots/loss_wavenet_h256_dropout02.png)
+
+### 10.5 Özet
+
+| model | parametre | dev |
+|---|---|---|
+| Karpathy (video) | 76,579 | 1.993 |
+| büyük WaveNet, `step` (görev 5) | 76,579 | 1.9876 |
+| büyük WaveNet, `warmup_cosine` | 76,579 | 1.9806 |
+| hidden 256 + dropout 0.2 (son Linear'dan önce) | 283,555 | **1.9758** |
+
