@@ -7,19 +7,17 @@ from viz import plot_loss
 
 TOTAL_STEPS = 200000
 LR = 0.1
-LR_DECAYED = 0.01
-LR_DECAY_STEP = 150000
 ARCH = "wavenet"   # "flat": MLP, "wavenet": ikişer ikişer birleştiren ağaç
 BLOCK_SIZE = 8     # wavenet için 2'nin kuvveti olmalı (8 -> 4 -> 2 -> 1)
 # Görev 1-4: EMB_DIM 10; hidden flat 200, wavenet 68 (~22k parametre, düz modelle eşit).
 # Görev 5: wavenet büyütüldü -> EMB_DIM 24, hidden 128 (~76k parametre).
 EMB_DIM = 24
-HIDDEN_SIZE = 128 if ARCH == "wavenet" else 200
+HIDDEN_SIZE = 256 if ARCH == "wavenet" else 200
 BATCH_SIZE = 32
 SEED = 42
 
 # Hafta 4'ten gelen eklemeler. Varsayılanlar (0.0 ve "step") görev 1-6'daki koşuları birebir tekrarlar.
-DROPOUT_P = 0.0              # her Tanh'tan sonra; 0 iken Dropout katmanı hiçbir şey yapmaz
+DROPOUT_P = 0.2              # son Linear'dan önce; 0 iken Dropout katmanı hiçbir şey yapmaz
 LR_SCHEDULE = "warmup_cosine"         # "step": LR -> LR_DECAYED (LR_DECAY_STEP'te) | "warmup_cosine": hafta 4'teki scheduler
 WARMUP_STEPS = 200
 LR_MIN = 0.0
@@ -49,10 +47,11 @@ if ARCH == "flat":
 elif ARCH == "wavenet":
     # Her blok komşu iki vektörü birleştirir: T 8 -> 4 -> 2 -> 1.
     # İlk blokta birleşen şey iki harfin embedding'i (2*EMB_DIM), sonrakilerde iki gizli vektör (2*HIDDEN_SIZE).
+    # Dropout sadece son Linear'dan önce: arkasından BatchNorm gelirse train/eval varyansı farklı olur.
     model = Sequential([
         Embedding(VOCAB_SIZE, EMB_DIM),
-        FlattenConsecutive(2), Linear(EMB_DIM * 2, HIDDEN_SIZE, bias=False), BatchNorm1d(HIDDEN_SIZE), Tanh(), Dropout(DROPOUT_P),
-        FlattenConsecutive(2), Linear(HIDDEN_SIZE * 2, HIDDEN_SIZE, bias=False), BatchNorm1d(HIDDEN_SIZE), Tanh(), Dropout(DROPOUT_P),
+        FlattenConsecutive(2), Linear(EMB_DIM * 2, HIDDEN_SIZE, bias=False), BatchNorm1d(HIDDEN_SIZE), Tanh(),
+        FlattenConsecutive(2), Linear(HIDDEN_SIZE * 2, HIDDEN_SIZE, bias=False), BatchNorm1d(HIDDEN_SIZE), Tanh(),
         FlattenConsecutive(2), Linear(HIDDEN_SIZE * 2, HIDDEN_SIZE, bias=False), BatchNorm1d(HIDDEN_SIZE), Tanh(), Dropout(DROPOUT_P),
         Linear(HIDDEN_SIZE, VOCAB_SIZE),
     ])
@@ -64,12 +63,6 @@ parameters = model.parameters()
 print(sum(p.nelement() for p in parameters))
 for p in parameters: 
     p.requires_grad = True
-
-def get_lr(step):
-    if LR_SCHEDULE == "step":
-        return LR if step < LR_DECAY_STEP else LR_DECAYED
-    elif LR_SCHEDULE == "warmup_cosine":
-        return warmup_cosine_lr(step, TOTAL_STEPS, LR, WARMUP_STEPS, LR_MIN)
 
 # Tanh/Linear gibi training alanı olmayan katmanlara da atanır, etkisi yok.
 def set_training(model, mode):
@@ -114,7 +107,7 @@ for i in range(TOTAL_STEPS):
         p.grad = None 
     loss.backward()
     
-    lr = get_lr(i)
+    lr = warmup_cosine_lr(i, TOTAL_STEPS, LR, WARMUP_STEPS, LR_MIN)
     for p in parameters: 
         p.data += -lr * p.grad 
     
