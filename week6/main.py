@@ -16,9 +16,8 @@ HIDDEN_SIZE = 256 if ARCH == "wavenet" else 200
 BATCH_SIZE = 32
 SEED = 42
 
-# Hafta 4'ten gelen eklemeler. Varsayılanlar (0.0 ve "step") görev 1-6'daki koşuları birebir tekrarlar.
 DROPOUT_P = 0.2              # son Linear'dan önce; 0 iken Dropout katmanı hiçbir şey yapmaz
-LR_SCHEDULE = "warmup_cosine"         # "step": LR -> LR_DECAYED (LR_DECAY_STEP'te) | "warmup_cosine": hafta 4'teki scheduler
+LR_SCHEDULE = "warmup_cosine"        
 WARMUP_STEPS = 200
 LR_MIN = 0.0
 
