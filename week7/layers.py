@@ -57,14 +57,3 @@ class BigramLanguageModel(nn.Module):
             idx_next = torch.multinomial(probs, num_samples=1) # (B, 1)
             idx = torch.cat((idx, idx_next), dim=-1) # (B, T+1)
         return idx 
-
-if __name__ == "__main__":
-    h = Head(n_embd=32, head_size=16, block_size=8)
-    x = torch.randn(4, 5, 32)   # T=5 < block_size=8
-    print(h(x).shape)           # beklenen: torch.Size([4, 5, 16])
-    
-    m = BigramLanguageModel(vocab_size=65, n_embd=32, block_size=8)
-    idx = torch.randint(0, 65, (4, 8))
-    logits, loss = m(idx, idx)
-    print(logits.shape, loss.item()) 
-    out = m.generate(torch.zeros((1, 1), dtype=torch.long), max_new_tokens=20)
