@@ -4,10 +4,11 @@ from dataset import read_text, Tokenizer, Dataset
 from layers import BigramLanguageModel
 
 BLOCK_SIZE = 8 
-BATCH_SIZE = 4
+BATCH_SIZE = 16
 PATH = "input.txt"
 MAX_STEP_SIZE = 100000
 EVAL_ITERS = 200
+N_EMBD = 32 
 
 text = read_text(path=PATH)
 tok = Tokenizer(text)
@@ -17,7 +18,7 @@ data = tok.encode(text)
 ds = Dataset(data, BLOCK_SIZE, BATCH_SIZE) 
 xb, yb = ds.get_batch('train')
 
-blm = BigramLanguageModel(VOCAB_SIZE)
+blm = BigramLanguageModel(VOCAB_SIZE, N_EMBD, BLOCK_SIZE)
 
 @torch.no_grad()
 def estimate_loss(model, ds, eval_iters):
@@ -50,3 +51,4 @@ print(f"train_loss: {losses['train']:.4f}, val_loss: {losses['val']:.4f}")
 
 
     
+torch.save(blm.state_dict(), "head_model.pt")
