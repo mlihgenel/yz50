@@ -13,3 +13,4 @@
 | 5 | Backprop Ninja: cross entropy ve BatchNorm dahil gradient'leri elle hesaplamak | [week5/](week5/) |
 | 6 | WaveNet: katmanları sınıflara toplamak, bağlam 8, harfleri ikişer birleştiren ağaç, 3D BatchNorm hatası | [week6/](week6/) |
 | 7 | Self-attention: Tiny Shakespeare, bigram tabanı, geçmişin ortalaması (tril matmul), tek head (Q/K/V, pozisyon embedding), attention ısı haritası | [week7/](week7/) |
+| 8 | Transformer bloğu: multi-head, FFN, residual, LayerNorm (ablation), büyütme + dropout (Colab T4, val 1.486), Türkçe GPT (Nutuk), makale Şekil 1 eşleştirmesi | [week8/](week8/) |
