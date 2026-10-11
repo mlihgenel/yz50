@@ -1,9 +1,5 @@
-"""Görev 4: Vikikaynak'tan Türkçe metin derle (Nutuk, 1927, kamu malı).
-
-İçindekiler -> bölümler -> kısımlar zincirini izleyerek okuma sırasıyla çeker,
-wikitext işaretlerini temizler ve düz metni turkce.txt'ye yazar.
-    python fetch_turkish.py
-"""
+# Görev 4: Vikikaynak'tan Türkçe metin (Nutuk, 1927, kamu malı).
+# İçindekiler -> bölümler -> kısımlar sırasıyla çekilir, wikitext temizlenir, turkce.txt'ye yazılır.
 import os
 import re
 import ssl
@@ -23,8 +19,8 @@ if os.path.exists('/etc/ssl/cert.pem'):
     SSL_CTX.load_verify_locations('/etc/ssl/cert.pem')
 
 
+# sayfanın ham wikitext'i. 429 (çok istek) gelirse bekleyip tekrar dener
 def fetch_raw(title, retries=6):
-    """Bir sayfanın ham wikitext'i. 429 (çok istek) gelirse bekleyip tekrar dener."""
     url = BASE + '?' + urllib.parse.urlencode({'title': title, 'action': 'raw'})
     req = urllib.request.Request(url, headers=HEADERS)
     for attempt in range(retries):
@@ -42,8 +38,8 @@ def fetch_raw(title, retries=6):
             time.sleep(wait)
 
 
+# içindekilerdeki [[/alt sayfa|...]] linkleri, sırayla ve tam başlık olarak
 def subpage_links(wikitext, parent):
-    """İçindekiler tablosundaki [[/alt sayfa|...]] linklerini sırayla, tam başlık olarak döndürür."""
     links = re.findall(r'\[\[/([^|\]]+)', wikitext)
     seen = []
     for l in links:
@@ -53,8 +49,8 @@ def subpage_links(wikitext, parent):
     return seen
 
 
+# {{...}} şablonlarını iç içe olanlarla birlikte siler
 def strip_templates(s):
-    """{{...}} şablonlarını iç içe olanlarla birlikte siler."""
     out, depth, i = [], 0, 0
     while i < len(s):
         if s.startswith('{{', i):
@@ -89,26 +85,21 @@ def clean(wikitext):
     return s.strip()
 
 
-def main():
-    chapters = subpage_links(fetch_raw(ROOT), ROOT)
-    print(f"{len(chapters)} bölüm")
-    parts = []
-    for ch in chapters:
-        ch_text = fetch_raw(ch)
-        sections = subpage_links(ch_text, ch)
-        body = clean(ch_text)          # bölüm sayfasının kendi metni (varsa)
-        if body:
-            parts.append(body)
-        for sec in sections:
-            parts.append(clean(fetch_raw(sec)))
-            time.sleep(0.5)            # Vikikaynak'a nazik ol
-        print(f"  {ch}: {len(sections)} kısım, toplam {sum(len(p) for p in parts):,} karakter")
+chapters = subpage_links(fetch_raw(ROOT), ROOT)
+print(f"{len(chapters)} bölüm")
+parts = []
+for ch in chapters:
+    ch_text = fetch_raw(ch)
+    sections = subpage_links(ch_text, ch)
+    body = clean(ch_text)   # bölüm sayfasının kendi metni (varsa)
+    if body:
+        parts.append(body)
+    for sec in sections:
+        parts.append(clean(fetch_raw(sec)))
+        time.sleep(0.5)     # Vikikaynak'a nazik ol
+    print(f"{ch}: {len(sections)} kısım, toplam {sum(len(p) for p in parts)} karakter")
 
-    text = '\n\n'.join(p for p in parts if p) + '\n'
-    with open(OUT, 'w', encoding='utf-8') as f:
-        f.write(text)
-    print(f"{OUT}: {len(text):,} karakter, {len(text.encode('utf-8')):,} byte, {len(set(text))} farklı karakter")
-
-
-if __name__ == '__main__':
-    main()
+text = '\n\n'.join(p for p in parts if p) + '\n'
+with open(OUT, 'w', encoding='utf-8') as f:
+    f.write(text)
+print(f"{OUT}: {len(text)} karakter, {len(set(text))} farklı karakter")

@@ -24,9 +24,9 @@ Görseller `make_figures.py` ile üretildi (`figures/`). Görev 3 ve 4'ün sayı
 | Dosya | Sorumluluk |
 |---|---|
 | `dataset.py` | `read_text` (utf-8), `Tokenizer`, `Dataset` (`get_batch`, `device`) |
-| `layers.py` | `Head`, `MultiHeadAttention`, `FeedForward`, `Block`, `LanguageModel` taban sınıfı (loss + `generate`), `BigramLanguageModel`, `GPTLanguageModel` |
-| `train.py` | `get_device`, `count_params`, `estimate_loss`, `train`; CLI: `CONFIGS` (`small` / `m1` / `video`), checkpoint ve örnek kaydı |
-| `ablation.py` | görev 1-2 tablosu: `VARIANTS` listesi, aynı seed ve hiperparametrelerle sırayla eğitir |
+| `layers.py` | `Head`, `MultiHeadAttention`, `FeedForward`, `Block`, `BigramLanguageModel`, `GPTLanguageModel` |
+| `train.py` | görev 3-4: tam GPT'yi eğitir, checkpoint ve örnek kaydeder (`python train.py <config> <veri>`) |
+| `ablation.py` | görev 1-2 tablosu: `VARIANTS` listesindeki modelleri aynı seed ve hiperparametrelerle sırayla eğitir |
 | `fetch_turkish.py` | görev 4: Vikikaynak'tan Nutuk'u okuma sırasıyla çeker, wikitext'i temizler → `turkce.txt` |
 | `colab_train.ipynb` | görev 3-4'ün büyük eğitimleri (Colab T4) |
 | `make_figures.py` | README görselleri → `figures/` |
@@ -36,10 +36,10 @@ Görseller `make_figures.py` ile üretildi (`figures/`). Görev 3 ve 4'ün sayı
 `checkpoints/*.pt` repoya alınmadı (52 MB'a kadar).
 
 ```bash
-python ablation.py cpu              # görev 1-2 (hepsi), ya da: python ablation.py cpu 3 4
-python train.py --config small --device cpu
-python train.py --config video                       # Colab
-python train.py --config video --data turkce.txt     # Colab
+python ablation.py                  # görev 1-2 (satır seçmek için VARIANTS listesini düzenle)
+python train.py small
+python train.py video               # Colab
+python train.py video turkce.txt    # Colab
 python fetch_turkish.py
 python make_figures.py
 ```
@@ -93,7 +93,7 @@ Yan etki: step 0 loss'u 4.63, rastgele tahminin `ln 65 = 4.17`'sinin üstünde. 
 
 ### 1.4 LayerNorm
 
-Pre-norm: alt katmana giden **kopya** normalize ediliyor, akışın kendisi değil. En sonda `lm_head`'den önce bir `ln_f` daha var. Bayrak kapalıyken `nn.Identity()`.
+Pre-norm: alt katmana giden **kopya** normalize ediliyor, akışın kendisi değil. En sonda `lm_head`'den önce bir `ln_f` daha var.
 
 Val 2.019: residual ile fark gürültü içinde. Bu boyda (3 blok, 32 boyut) eğitim zaten kararlı. Görünen etki başlangıçta: step 0 loss 4.63 → **4.31**, `ln 65`'e çok daha yakın. LayerNorm'un asıl faydasının derin modellerde olması bekleniyor; görev 3'teki 6 bloklu model LayerNorm'la eğitildi, LayerNorm'suz hali denenmedi.
 

@@ -1,50 +1,102 @@
-import sys
+import time
 import torch
 from dataset import read_text, Tokenizer, Dataset
 from layers import BigramLanguageModel, GPTLanguageModel
-from train import train, get_device
 
 BLOCK_SIZE = 8
 BATCH_SIZE = 32
 N_EMBD = 32
-MAX_STEPS = 10000
-LR = 1e-3
+N_HEAD = 4
+N_LAYER = 3
+MAX_STEPS = 10000   # 5k adımda bigram yakınsamadı
+EVAL_INTERVAL = 1000
 EVAL_ITERS = 200
+LR = 1e-3
 SEED = 1337
+DEVICE = "cpu"
+PATH = "input.txt"
 
-device = sys.argv[1] if len(sys.argv) > 1 else get_device()
-
-text = read_text("input.txt")
-tok = Tokenizer(text)
-ds = Dataset(tok.encode(text), BLOCK_SIZE, BATCH_SIZE, device=device)
-
-# (isim, model kurucu) — her adımda bu listeye bir satır eklenecek
+# görev 1-2 tablosu: her satır bir öncekinden tek bir şeyle ayrılıyor.
+# sadece bazılarını çalıştırmak için listeden sil.
 VARIANTS = [
-    ("bigram",              lambda: BigramLanguageModel(tok.vocab_size)),
-    ("tek head (1x32)",     lambda: GPTLanguageModel(tok.vocab_size, N_EMBD, BLOCK_SIZE, n_head=1)),
-    ("multi-head (4x8)",    lambda: GPTLanguageModel(tok.vocab_size, N_EMBD, BLOCK_SIZE, n_head=4)),
-    ("+ feedforward",       lambda: GPTLanguageModel(tok.vocab_size, N_EMBD, BLOCK_SIZE, n_head=4, use_ffwd=True)),
-    ("3 blok, residual yok", lambda: GPTLanguageModel(tok.vocab_size, N_EMBD, BLOCK_SIZE, n_head=4, n_layer=3,
-                                                      use_ffwd=True)),
-    ("+ residual",          lambda: GPTLanguageModel(tok.vocab_size, N_EMBD, BLOCK_SIZE, n_head=4, n_layer=3,
-                                                      use_ffwd=True, use_residual=True)),
-    ("+ LayerNorm",         lambda: GPTLanguageModel(tok.vocab_size, N_EMBD, BLOCK_SIZE, n_head=4, n_layer=3,
-                                                      use_ffwd=True, use_residual=True, use_ln=True)),
+    "bigram",
+    "tek head",
+    "multi-head",
+    "+ feedforward",
+    "3 blok, residual yok",
+    "+ residual",
+    "+ LayerNorm",
 ]
 
-# sadece belirli satırları çalıştırmak için: python ablation.py cpu 3 4  (1'den başlar)
-if len(sys.argv) > 2:
-    VARIANTS = [VARIANTS[int(i) - 1] for i in sys.argv[2:]]
+text = read_text(PATH)
+tok = Tokenizer(text)
+VOCAB_SIZE = tok.vocab_size
+data = tok.encode(text)
+ds = Dataset(data, BLOCK_SIZE, BATCH_SIZE, device=DEVICE)
+
+
+def build_model(name):
+    if name == "bigram":
+        model = BigramLanguageModel(VOCAB_SIZE)
+    elif name == "tek head":     # 1 tane 32'lik head
+        model = GPTLanguageModel(VOCAB_SIZE, N_EMBD, BLOCK_SIZE, n_head=1)
+    elif name == "multi-head":   # 4 tane 8'lik head, parametre sayısı aynı
+        model = GPTLanguageModel(VOCAB_SIZE, N_EMBD, BLOCK_SIZE, n_head=N_HEAD)
+    elif name == "+ feedforward":
+        model = GPTLanguageModel(VOCAB_SIZE, N_EMBD, BLOCK_SIZE, n_head=N_HEAD, use_ffwd=True)
+    elif name == "3 blok, residual yok":
+        model = GPTLanguageModel(VOCAB_SIZE, N_EMBD, BLOCK_SIZE, n_head=N_HEAD, n_layer=N_LAYER,
+                                 use_ffwd=True)
+    elif name == "+ residual":
+        model = GPTLanguageModel(VOCAB_SIZE, N_EMBD, BLOCK_SIZE, n_head=N_HEAD, n_layer=N_LAYER,
+                                 use_ffwd=True, use_residual=True)
+    elif name == "+ LayerNorm":
+        model = GPTLanguageModel(VOCAB_SIZE, N_EMBD, BLOCK_SIZE, n_head=N_HEAD, n_layer=N_LAYER,
+                                 use_ffwd=True, use_residual=True, use_ln=True)
+    return model
+
+
+@torch.no_grad()
+def estimate_loss(model, ds, eval_iters):
+    model.eval()
+    out = {}
+    for split in ['train', 'val']:
+        losses = torch.zeros(eval_iters)
+        for k in range(eval_iters):
+            xb, yb = ds.get_batch(split)
+            _, loss = model(xb, yb)
+            losses[k] = loss.item()
+        out[split] = losses.mean().item()
+    model.train()
+    return out
+
 
 results = []
-for name, build in VARIANTS:
-    torch.manual_seed(SEED)     # aynı başlangıç ağırlıkları ve aynı batch sırası
-    model = build().to(device)
-    print(f"\n== {name} ({device})")
-    r = train(model, ds, MAX_STEPS, lr=LR, eval_iters=EVAL_ITERS)
-    results.append((name, r))
+for name in VARIANTS:
+    torch.manual_seed(SEED)   # her satırda aynı başlangıç ağırlıkları ve aynı batch sırası
+    model = build_model(name).to(DEVICE)
+    n_params = sum(p.numel() for p in model.parameters())
+    print(f"\n== {name} ({n_params} parametre)")
+
+    optimizer = torch.optim.AdamW(model.parameters(), lr=LR)
+    t0 = time.time()
+    for step in range(MAX_STEPS):
+        if step % EVAL_INTERVAL == 0:
+            out = estimate_loss(model, ds, EVAL_ITERS)
+            print(f"step: {step}, train_loss: {out['train']:.4f}, val_loss: {out['val']:.4f}")
+
+        xb, yb = ds.get_batch('train')
+        logits, loss = model(xb, yb)
+        optimizer.zero_grad(set_to_none=True)
+        loss.backward()
+        optimizer.step()
+
+    elapsed = time.time() - t0
+    out = estimate_loss(model, ds, EVAL_ITERS)
+    print(f"train_loss: {out['train']:.4f}, val_loss: {out['val']:.4f}, süre: {elapsed:.0f} sn")
+    results.append((name, n_params, out['train'], out['val'], elapsed))
 
 print(f"\n| varyant | parametre | train | val | süre (sn) |")
 print(f"|---|---|---|---|---|")
-for name, r in results:
-    print(f"| {name} | {r['params']:,} | {r['train']:.4f} | {r['val']:.4f} | {r['time']:.0f} |")
+for name, n_params, train_loss, val_loss, elapsed in results:
+    print(f"| {name} | {n_params:,} | {train_loss:.4f} | {val_loss:.4f} | {elapsed:.0f} |")
