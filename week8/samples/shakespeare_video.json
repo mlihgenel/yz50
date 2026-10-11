@@ -1,0 +1,19 @@
+{
+  "config": {
+    "n_embd": 384,
+    "n_head": 6,
+    "n_layer": 6,
+    "block_size": 256,
+    "batch_size": 64,
+    "dropout": 0.2,
+    "lr": 0.0003,
+    "max_steps": 5000,
+    "eval_interval": 500
+  },
+  "device": "cuda",
+  "vocab_size": 65,
+  "train": 1.0472350120544434,
+  "val": 1.4856284856796265,
+  "time": 701.1455428600311,
+  "params": 10788929
+}

@@ -1,0 +1,19 @@
+{
+  "config": {
+    "n_embd": 32,
+    "n_head": 4,
+    "n_layer": 3,
+    "block_size": 8,
+    "batch_size": 32,
+    "dropout": 0.0,
+    "lr": 0.001,
+    "max_steps": 10000,
+    "eval_interval": 1000
+  },
+  "device": "cpu",
+  "vocab_size": 65,
+  "train": 1.8930954933166504,
+  "val": 2.019033193588257,
+  "time": 120.84990692138672,
+  "params": 42369
+}

@@ -3,3 +3,5 @@ __pycache__/
 .DS_Store
 .venv/
 animations/
+week8/checkpoints/
+*.zip
