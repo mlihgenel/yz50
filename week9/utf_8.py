@@ -1,4 +1,14 @@
+"""
+Hafta 9 - Görev 1: UTF-8
 
+Neden kod noktasını (ord) doğrudan token olarak kullanmıyoruz?
+- Vocab çok büyük olur: Unicode ~150 bin karakter tanımlıyor; embedding tablosu ve
+  çıkış katmanı devasa olur, karakterlerin çoğu eğitimde neredeyse hiç görülmez.
+- Kararsız: Unicode standardı sürekli değişiyor, yeni karakterler ekleniyor.
+  Byte'lar ise sabit: her zaman 256 tane.
+- Ama ham byte'lar da tek başına iyi değil: Türkçe harfler 2, emojiler 4 byte tuttuğu
+  için diziler uzar, context penceresi boşa harcanır. Çözüm: byte'lar üzerinde BPE.
+"""
 def analyze_character(char: str) -> dict: 
     raw_bytes = char.encode("utf-8")
     return {
@@ -31,10 +41,10 @@ def print_utf8_table(text: str):
     print("-" * 65)
     print(f"Toplam Karakter: {len(text)} | Toplam Byte: {len(text.encode('utf-8'))}")
     print(f"1 Byte Tutan Karakterler (ASCII): {sorted(list(one_byte_chars))}")
-    print(f"2+ Byte Tutan Karakterler (Özel/Türkçe): {sorted(list(two_byte_chars))}")
+    print(f"2+ Byte Tutan Karakterler (Türkçe/emoji): {sorted(list(two_byte_chars))}")
 
 if __name__ == "__main__": 
-    sample_text = "Hello world, how are you"
+    sample_text = "Çağrı ılık sütü İzmir'de içti, şöyle güzel 🌸"
     print("--- UTF-8 ve Karakter Analizi Tablosu ---\n")
     print_utf8_table(sample_text)
  
