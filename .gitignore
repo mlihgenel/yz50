@@ -5,3 +5,5 @@ __pycache__/
 animations/
 week8/checkpoints/
 *.zip
+week9/checkpoints/
+week9/bpe_cache.pt

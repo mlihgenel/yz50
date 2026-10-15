@@ -1,0 +1,23 @@
+{
+  "config": {
+    "n_embd": 384,
+    "n_head": 6,
+    "n_layer": 6,
+    "block_size": 256,
+    "batch_size": 64,
+    "dropout": 0.2,
+    "lr": 0.0003,
+    "max_steps": 2000,
+    "eval_interval": 250
+  },
+  "device": "cuda",
+  "vocab_size": 512,
+  "params": 11132672,
+  "time": 484.5099127292633,
+  "train": 1.4074790477752686,
+  "val": 2.437173843383789,
+  "chars_per_token": 1.9320630382483177,
+  "train_per_char": 0.7284850545307998,
+  "val_per_char": 1.2614359858534554,
+  "week8_val_per_char": 1.2454
+}
