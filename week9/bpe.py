@@ -49,8 +49,8 @@ class BasicTokenizer:
             
          
 
-def get_stats(ids: list) -> dict:
-    counts = {} 
+def get_stats(ids: list, counts: dict = None) -> dict:
+    if counts is None: counts = {} 
     for pair in zip(ids, ids[1:]):
         counts[pair] = counts.get(pair, 0) + 1 
     return counts
