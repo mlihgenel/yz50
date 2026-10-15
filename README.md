@@ -14,3 +14,4 @@
 | 6 | WaveNet: katmanları sınıflara toplamak, bağlam 8, harfleri ikişer birleştiren ağaç, 3D BatchNorm hatası | [week6/](week6/) |
 | 7 | Self-attention: Tiny Shakespeare, bigram tabanı, geçmişin ortalaması (tril matmul), tek head (Q/K/V, pozisyon embedding), attention ısı haritası | [week7/](week7/) |
 | 8 | Transformer bloğu: multi-head, FFN, residual, LayerNorm (ablation), büyütme + dropout (Colab T4, val 1.486), Türkçe GPT (Nutuk), makale Şekil 1 eşleştirmesi | [week8/](week8/) |
+| 9 | GPT Tokenizer: UTF-8, BPE sıfırdan (vocab 512, 2.11 byte/token), GPT-4 regex deseni ve Türkçe ekler, cl100k_base'de TR/EN (kelime başına 3.2×), hafta 8 GPT'si BPE ile (karakter başına val 1.247) | [week9/](week9/) |

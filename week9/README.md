@@ -16,6 +16,8 @@ Bu hafta çözülen görevler:
 - **Görev 5:** aynı paragraf Türkçe ve İngilizce: `cl100k_base` ve kendi tokenizer'ımız
 - **Ek (b):** hafta 8 GPT'sini vocab 512'lik BPE ile eğitmek (Colab)
 
+Görseller `make_figures.py` ile üretildi (`figures/`). Tokenizer sayıları script içinde tam `turkce.txt` üzerinde yeniden hesaplanıyor, ek (b) sayıları `samples/*.json`'dan ve `train_gpt.ipynb` çıktısından geliyor.
+
 ---
 
 ## Dosya yapısı
@@ -30,6 +32,7 @@ Bu hafta çözülen görevler:
 | `compare_tr_en.py` | görev 5: TR/EN paragraf, `cl100k_base` ve kendi tokenizer'ımız |
 | `train_gpt.ipynb` | ek (b): BPE tokenizer + hafta 8 GPT, Colab'da çalıştırıldı (çıktılarıyla) |
 | `samples/` | ek (b) örnek metni (`.txt`) ve sonuçları (`.json`) |
+| `make_figures.py` | README görselleri → `figures/` (~1 dk) |
 | `week9.ipynb` | videoyu izlerken yapılan denemeler |
 
 `checkpoints/*.pt` (54 MB) ve `bpe_cache.pt` (tokenizer + encode edilmiş veri önbelleği) repoya alınmadı.
@@ -41,6 +44,7 @@ python main.py
 python train_tokenizer.py
 python regex_tokenizer.py
 python compare_tr_en.py
+python make_figures.py
 ```
 
 ---
@@ -48,6 +52,8 @@ python compare_tr_en.py
 ## 1. UTF-8 (görev 1)
 
 `"Çağrı ılık sütü İzmir'de içti, şöyle güzel 🌸"` → **44 karakter, 59 byte**.
+
+![utf-8 byte](figures/01_utf8_byte.png)
 
 | karakter | kod noktası | byte |
 |---|---|---|
@@ -71,7 +77,9 @@ def merge(ids, pair, idx):                 # her (p0, p1) geçişini tek idx'e �
 
 `train` her adımda en sık geçen çifti bulur, ona yeni bir id verir (256, 257, …) ve diziyi yeniden yazar. `vocab_size - 256` kez tekrarlanır.
 
-**İlk 20 birleştirme** (tam `turkce.txt`, `BasicTokenizer`):
+![ilk birleştirmeler](figures/02_ilk_birlestirmeler.png)
+
+**İlk 20 birleştirme** (tam `turkce.txt`, `BasicTokenizer`, figürün sol yarısı):
 
 | # | çift | token | sayı | | # | çift | token | sayı |
 |---|---|---|---|---|---|---|---|---|
@@ -93,6 +101,10 @@ def merge(ids, pair, idx):                 # her (p0, p1) geçişini tek idx'e �
 
 **Sıkıştırma:** vocab 512 → **2.11 byte/token** (1.91 karakter/token), tam metinde ~39 sn. İlk 100k karakterde 2.14.
 
+![sıkıştırma](figures/03_sikistirma.png)
+
+Eğri başta dik, sonra yatıklaşıyor. İlk birleştirmeler on binlerce kez geçen çiftleri tek token'a indiriyor (`ı` tek başına 28k byte kazandırıyor), 256. birleştirmedeki çift ise sadece birkaç yüz kez geçiyor. Regex'li tokenizer sınır aşan birleştirmeleri yapamadığı için hep biraz geride kalıyor (2.108 ve 2.113), ama fark çok küçük.
+
 ## 3. encode / decode (görev 3)
 
 - `decode`: id → byte dizisi (`vocab`), birleştir, `bytes.decode("utf-8", errors="replace")`.
@@ -108,7 +120,7 @@ def merge(ids, pair, idx):                 # her (p0, p1) geçişini tek idx'e �
 GPT4_SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+"""
 ```
 
-`RegexTokenizer` metni önce bu desenle parçalara ayırıyor, BPE'yi her parçada **ayrı** çalıştırıyor (`get_stats(chunk, stats)` ile sayımlar parçalar boyunca toplanıyor). Birleştirmeler parça sınırını hiçbir zaman aşmıyor: harf ile noktalama, kelime ile sonraki boşluk asla aynı token'a girmiyor. Bu yüzden ilk birleştirmeler `e␣` yerine `␣b`, `␣m`, `␣v`, `␣ve` gibi **boşluk + kelime başı** oluyor.
+`RegexTokenizer` metni önce bu desenle parçalara ayırıyor, BPE'yi her parçada **ayrı** çalıştırıyor (`get_stats(chunk, stats)` ile sayımlar parçalar boyunca toplanıyor). Birleştirmeler parça sınırını hiçbir zaman aşmıyor: harf ile noktalama, kelime ile sonraki boşluk asla aynı token'a girmiyor. Bu yüzden `e␣`, `n␣`, `i␣` gibi birleştirmeler yerine `␣b`, `␣m`, `␣v`, `␣t` gibi **boşluk + kelime başı** token'ları öğreniliyor (figür 2'nin sağ yarısı, yeşil). Çok byte'lı karakterlerin geri kurulması (turuncu) iki tokenizer'da da aynı sırayla gidiyor.
 
 **`Ankara'dan İstanbul'a, Ahmet'te Ayşe'nin Ali'ler İzmir'deki`:**
 
@@ -116,6 +128,8 @@ GPT4_SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1
 |---|---|
 | GPT-4 | `Ankara` `'d` `an` `␣İstanbul` `'a` `,` `␣Ahmet` `'t` `e` `␣Ayşe` `'nin` `␣Ali` `'ler` `␣İzmir` `'d` `eki` |
 | `TR_SPLIT_PATTERN` | `Ankara` `'dan` `␣İstanbul` `'a` `,` `␣Ahmet` `'te` `␣Ayşe` `'nin` `␣Ali` `'ler` `␣İzmir` `'deki` |
+
+![bölünme](figures/04_bolunme.png)
 
 GPT-4 desenindeki ilk alternatif İngilizce kısaltmalar için (`'s`, `'d`, `'t`, `'ll`, …). Türkçe ekler `d`/`t` ile başlayınca bu kural ekin ilk harfini koparıyor: `'dan` → `'d` + `an`, `'te` → `'t` + `e`. `TR_SPLIT_PATTERN` bu alternatifi çıkarıyor ve ek bütün kalıyor. Roundtrip iki desende de `True`.
 
@@ -125,6 +139,8 @@ Nutuk'ta düz `'` yerine hep `’` (U+2019, 7,671 kez) kullanılmış. Kısaltma
 
 Aynı paragraf (İstanbul–Ankara tren yolculuğu), iki dilde:
 
+![tr en](figures/05_tr_en.png)
+
 | | kelime | byte | token | token/kelime | byte/token |
 |---|---|---|---|---|---|
 | TR / `cl100k_base` | 33 | 338 | 121 | **3.67** | 2.79 |
@@ -133,7 +149,7 @@ Aynı paragraf (İstanbul–Ankara tren yolculuğu), iki dilde:
 | EN / kendi (512) | 64 | 370 | 262 | 4.09 | 1.41 |
 
 - **`cl100k` ile Türkçe kelime başına ~3.2 kat daha pahalı.** Aynı anlam İngilizcede 73, Türkçede 121 token. Bağlam penceresine daha az metin sığıyor, API maliyeti artıyor. Sebebi eğitim verisinin büyük kısmının İngilizce olması: İngilizce kelimeler tek token, Türkçe kelimeler eklere ve hece parçalarına bölünüyor.
-- `cl100k`: `İ | stanbul | 'd | an`. `İ` 2 byte'lık nadir bir harf olduğu için ayrı token oluyor, `'dan` görev 4'teki kısaltma kuralıyla bölünüyor.
+- `cl100k`: `İ | stanbul | 'd | an` (figür 4'ün alt yarısı). `İ` 2 byte'lık nadir bir harf olduğu için ayrı token oluyor, `'dan` görev 4'teki kısaltma kuralıyla bölünüyor.
 - **Kendi tokenizer'ımız Türkçede daha verimli** (TR 1.94 ve EN 1.41 byte/token). Eğitim verisi Türkçe olduğu için Türkçe parçaları öğrenmiş. Ama vocab'ı ~200 kat küçük (512, cl100k ~100k) olduğu için toplam token sayısı yine daha fazla (174, cl100k 121).
 - Tek kelimeler: `gecikmeyeceğini` iki tokenizer'da da 8 token, `impatiently` cl100k'da 3, bizimkinde 8.
 
@@ -154,6 +170,8 @@ Aynı paragraf (İstanbul–Ankara tren yolculuğu), iki dilde:
 | 2000 (son) | 1.4075 | 2.4372 |
 
 ### 6.1 Karakter başına karşılaştırma
+
+![gpt eğitim](figures/06_gpt_egitim.png)
 
 Token başına loss'u hafta 8'in karakter başına loss'uyla doğrudan kıyaslayamayız: bir token ortalama 1.93 karakter taşıyor, yani tek tahminde daha fazla bilgi tahmin ediliyor. Metnin toplam loss'u aynı kalacak şekilde token başına loss'u karakter/token oranına bölünce iki değer aynı birime (nats/karakter) geliyor.
 
