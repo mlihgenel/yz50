@@ -16,7 +16,11 @@ Bu hafta çözülen görevler:
 - **Görev 5:** aynı paragraf Türkçe ve İngilizce: `cl100k_base` ve kendi tokenizer'ımız
 - **Ek (b):** hafta 8 GPT'sini vocab 512'lik BPE ile eğitmek (Colab)
 
-Görseller `make_figures.py` ile üretildi (`figures/`). Tokenizer sayıları script içinde tam `turkce.txt` üzerinde yeniden hesaplanıyor, ek (b) sayıları `samples/*.json`'dan ve `train_gpt.ipynb` çıktısından geliyor.
+Görseller `figures/` klasöründe. Tokenizer sayıları tam `turkce.txt` üzerinden hesaplandı, ek (b) sayıları `samples/*.json`'dan ve `train_gpt.ipynb` çıktısından geliyor.
+
+![pipeline](figures/07_pipeline.png)
+
+Tokenizer metin ile model arasındaki çeviri katmanı: metin → UTF-8 byte → (regex + merges) BPE token → token id → GPT. Model sadece tam sayı görüyor. Tokenizer ayrı eğitiliyor, model ondan sonra. `Ankara'dan` 10 byte'tan 7 token'a iniyor (`ar` = 262, `dan` = 320). Hafta 8 modelinde değişen tek şey embedding ve `lm_head` boyutu (vocab 104 → 512).
 
 ---
 
@@ -32,8 +36,6 @@ Görseller `make_figures.py` ile üretildi (`figures/`). Tokenizer sayıları sc
 | `compare_tr_en.py` | görev 5: TR/EN paragraf, `cl100k_base` ve kendi tokenizer'ımız |
 | `train_gpt.ipynb` | ek (b): BPE tokenizer + hafta 8 GPT, Colab'da çalıştırıldı (çıktılarıyla) |
 | `samples/` | ek (b) örnek metni (`.txt`) ve sonuçları (`.json`) |
-| `make_figures.py` | README görselleri → `figures/` (~1 dk) |
-| `week9.ipynb` | videoyu izlerken yapılan denemeler |
 
 `checkpoints/*.pt` (54 MB) ve `bpe_cache.pt` (tokenizer + encode edilmiş veri önbelleği) repoya alınmadı.
 
@@ -44,7 +46,6 @@ python main.py
 python train_tokenizer.py
 python regex_tokenizer.py
 python compare_tr_en.py
-python make_figures.py
 ```
 
 ---
@@ -76,6 +77,10 @@ def merge(ids, pair, idx):                 # her (p0, p1) geçişini tek idx'e �
 ```
 
 `train` her adımda en sık geçen çifti bulur, ona yeni bir id verir (256, 257, …) ve diziyi yeniden yazar. `vocab_size - 256` kez tekrarlanır.
+
+![bpe adım adım](figures/08_bpe_adim.png)
+
+`"ılık ılık süt"` üzerinde ilk 4 adım: 18 byte → 14 → 12 → 10 → 8 token. Önce `ı`'nın iki byte'ı (196, 177) birleşiyor, sonra `ıl`, `ılı`, `ılık`. Her yeni token bir önceki adımda oluşan token'ın üzerine kuruluyor. `ü` (195, 188) bu kısa metinde sadece bir kez geçtiği için ham byte olarak kalıyor.
 
 ![ilk birleştirmeler](figures/02_ilk_birlestirmeler.png)
 
@@ -110,9 +115,15 @@ Eğri başta dik, sonra yatıklaşıyor. İlk birleştirmeler on binlerce kez ge
 - `decode`: id → byte dizisi (`vocab`), birleştir, `bytes.decode("utf-8", errors="replace")`.
 - `encode`: metni byte'lara çevir; dizide, `merges` içinde **en erken öğrenilmiş** çifti bul (`min(..., key=merges.get)`) ve birleştir; birleştirilecek çift kalmayınca dur. Sıra önemli: eğitimdeki sırayla birleştirmezsek sonraki birleştirmeler (ör. `ı␣` = `256 + 32`) hiç oluşmaz.
 
+![encode sırası](figures/09_encode_sirasi.png)
+
+`"gelmişti"`: 9 byte → 4 token. Birleştirmeler soldan sağa değil, id sırasıyla yapılıyor: önce `ş` (264), sonra `el` (294), `ti` (309), `iş` (358) ve en son `miş` (459). `miş` ancak `iş` oluştuktan sonra mümkün.
+
 `"Merhaba Dünya! 🇹🇷 Her şey çok güzel 🌸"` → **50 byte → 36 token**, `decode(encode(x)) == x` → `True`. Emojiler eğitim verisinde yok, bu yüzden 4 ham byte olarak kalıyor (`🇹🇷` = 8 token).
 
 **`errors="replace"` neden gerekli?** Model her id dizisini üretebilir. Örneğin tek başına `240` (4 byte'lık bir karakterin ilk byte'ı) ya da 13. birleştirmedeki `’`'nin yarısı geçerli UTF-8 değildir. `errors="strict"` ile `decode` bu durumda hata verir. `replace` ise bozuk kısmı `�` yapıp devam eder.
+
+![decode replace](figures/11_decode_replace.png)
 
 ## 4. GPT-4 regex deseni (görev 4)
 
@@ -121,6 +132,10 @@ GPT4_SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1
 ```
 
 `RegexTokenizer` metni önce bu desenle parçalara ayırıyor, BPE'yi her parçada **ayrı** çalıştırıyor (`get_stats(chunk, stats)` ile sayımlar parçalar boyunca toplanıyor). Birleştirmeler parça sınırını hiçbir zaman aşmıyor: harf ile noktalama, kelime ile sonraki boşluk asla aynı token'a girmiyor. Bu yüzden `e␣`, `n␣`, `i␣` gibi birleştirmeler yerine `␣b`, `␣m`, `␣v`, `␣t` gibi **boşluk + kelime başı** token'ları öğreniliyor (figür 2'nin sağ yarısı, yeşil). Çok byte'lı karakterlerin geri kurulması (turuncu) iki tokenizer'da da aynı sırayla gidiyor.
+
+![regex parçalar](figures/10_regex_parcalar.png)
+
+`"Efendiler, 1919 senesi Mayıs’ının"`: dış kutular regex parçaları, iç kutular her parçanın BPE token'ları. Sayılar en fazla 3 basamaklık parçalara bölünüyor (`\p{N}{1,3}` → `191` + `9`), boşluk sonraki kelimeye yapışıyor (`␣senesi`, `␣Mayıs`), virgül ayrı parça. `’` kısaltma kuralına girmediği için `’ının` tek parça kalıyor, BPE onu `’` + `ın` + `ın` yapıyor.
 
 **`Ankara'dan İstanbul'a, Ahmet'te Ayşe'nin Ali'ler İzmir'deki`:**
 
@@ -184,6 +199,10 @@ Token başına loss'u hafta 8'in karakter başına loss'uyla doğrudan kıyaslay
 - **Kalite neredeyse aynı.** En iyi checkpoint'te karakter başına val 1.2474, hafta 8'de 1.2454. Bu veri boyutunda ve 512'lik vocab'da BPE, modelin metni daha iyi modellemesini sağlamadı.
 - **Kazanç verimlilikte.** Aynı `block_size=256` ile model artık ~495 karakter görüyor (hafta 8'de 256). Bağlam iki kat büyüdü ama attention maliyeti aynı kaldı. Aynı uzunlukta metin üretmek için yarı sayıda adım yetiyor.
 - **Overfitting daha erken başlıyor.** Val step 1500'den sonra yükseliyor, train düşmeye devam ediyor. Veri token cinsinden yarıya indi (~516k train token'ı), model ise aynı büyüklükte. Bu yüzden en iyi val'deki ağırlıklar ayrıca `checkpoints/turkce_bpe512_best.pt`'ye kaydedildi.
+
+![bağlam](figures/12_baglam.png)
+
+Nutuk'tan bir paragrafta 256 BPE token 499 karaktere denk geliyor. Aynı `block_size` ile model hafta 8'deki bağlamın yaklaşık iki katını görüyor.
 
 ### 6.2 Örnek metin (500 token ≈ 1000 karakter)
 
