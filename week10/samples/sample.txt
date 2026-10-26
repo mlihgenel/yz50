@@ -1,0 +1,34 @@
+cihaz: mps
+
+=== EN: "Hello, I'm a language model,"  (8 token)
+> Hello, I'm a language model, not a model itself. I've found a way to create more expressive and concise expressions than the past and a much wider vocabulary is available. One of the key
+> Hello, I'm a language model, and I don't want to see human language become the language of the future. You don't have much to lose. I hope at the same level you can
+> Hello, I'm a language model, not just a model," Vettel said when asked to comment on this.  "I've written a very good script on the TV set and I've
+> Hello, I'm a language model, so I've used different kinds of syntax.  So why do I call some specific types A and B and C ? I think it's because the syntax
+> Hello, I'm a language model, it's that simple"  — I don't know. That would be a tough one to write, and maybe you'll have to write one or a
+
+=== TR: 'Merhaba, ben bir dil modeliyim,'  (11 token)
+> Merhaba, ben bir dil modeliyim, cieren cen veybe ndal veyde,  Nam hag dzhiye veyde s
+> Merhaba, ben bir dil modeliyim, deyaa poyem balyiyim.  Prayer was asked to write for the National Bank, the Treasury Department and
+> Merhaba, ben bir dil modeliyim, ben miyat al tashir hain", aiyit, "he is the only ones who knows the name of the land for
+> Merhaba, ben bir dil modeliyim, ba bebbebbe baith ach baitham, baithen mah, se baithan, bhik. (
+> Merhaba, ben bir dil modeliyim, niya ba pakhiyim: Aya kamitamahir kakhiyim, kekhi alin, kekh
+
+=== TR2: "İstanbul'dan Ankara'ya giden hızlı tren, sabahın erken saatlerinde"  (28 token)
+> İstanbul'dan Ankara'ya giden hızlı tren, sabahın erken saatlerindeği. Ainım zıltamü
+> İstanbul'dan Ankara'ya giden hızlı tren, sabahın erken saatlerinde biray, deyırt kekırı
+> İstanbul'dan Ankara'ya giden hızlı tren, sabahın erken saatlerindeğanı.ıstanbul's ßingliı
+> İstanbul'dan Ankara'ya giden hızlı tren, sabahın erken saatlerinde. Pübukçığı, ç
+> İstanbul'dan Ankara'ya giden hızlı tren, sabahın erken saatlerinde yanarı.  Translation from the Turkish:
+
+=== başlangıç cümleleri (karakter / gpt2 / cl100k_base)
+EN: 28 karakter, gpt2 8, cl100k 8
+    Hello | , |  I | 'm |  a |  language |  model | ,
+TR: 31 karakter, gpt2 11, cl100k 11
+    Mer | hab | a | , |  ben |  bir |  dil |  model | iy | im | ,
+TR2: 66 karakter, gpt2 28, cl100k 22
+    � | � | stanbul | 'd | an |  Ankara | ' | ya |  g | iden |  h | ı | zl | ı |  t | ren | , |  sab | ah | ı | n |  er | ken |  sa | at | ler | ind | e
+
+=== hafta 9 paragrafı (token/kelime)
+TR: 33 kelime, 338 byte | gpt2 155 token (4.70/kelime) | cl100k 121 token (3.67/kelime)
+EN: 64 kelime, 370 byte | gpt2 74 token (1.16/kelime) | cl100k 73 token (1.14/kelime)
