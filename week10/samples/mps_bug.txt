@@ -1,0 +1,4 @@
+vocab   8192 | x.grad cpu-mps göreli fark: 0.0e+00 
+vocab  32768 | x.grad cpu-mps göreli fark: 8.6e-06 
+vocab  50257 | x.grad cpu-mps göreli fark: 9.0e-01 <- YANLIŞ
+vocab  50304 | x.grad cpu-mps göreli fark: 7.9e-06 
