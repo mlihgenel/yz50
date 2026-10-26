@@ -1,0 +1,19 @@
+     token  loss/token  loss/karakter  bit/byte  toplam nats
+P1 TR   29       6.055          3.252     4.153        175.6
+P1 EN   17       2.790          0.719     1.037         47.4
+     TR/EN toplam bilgi oranı: 3.70x, token oranı: 1.71x
+P2 TR   32       5.026          2.400     3.178        160.8
+P2 EN   14       2.972          0.586     0.845         41.6
+     TR/EN toplam bilgi oranı: 3.87x, token oranı: 2.29x
+P3 TR   31       5.114          3.049     3.689        158.5
+P3 EN    9       4.875          0.933     1.347         43.9
+     TR/EN toplam bilgi oranı: 3.61x, token oranı: 3.44x
+P4 TR   24       6.336          3.235     4.139        152.1
+P4 EN   12       3.283          0.838     1.209         39.4
+     TR/EN toplam bilgi oranı: 3.86x, token oranı: 2.00x
+P5 TR   29       5.804          3.060     4.115        168.3
+P5 EN   12       3.860          0.681     0.983         46.3
+     TR/EN toplam bilgi oranı: 3.63x, token oranı: 2.42x
+par. TR  155       5.025          2.537     3.325        778.9
+par. EN   74       2.704          0.541     0.780        200.1
+     TR/EN toplam bilgi oranı: 3.89x, token oranı: 2.09x

@@ -1,0 +1,134 @@
+[
+ {
+  "tr": {
+   "text": "Bugün hava çok güzel, parkta yürüyüş yapmak istiyorum.",
+   "tokens": 29,
+   "chars": 54,
+   "bytes": 61,
+   "nll": 175.59715270996094,
+   "per_token": 6.055074231377963,
+   "per_char": 3.251799124258536,
+   "bits_per_byte": 4.1530023181784035
+  },
+  "en": {
+   "text": "The weather is very nice today, I want to take a walk in the park.",
+   "tokens": 17,
+   "chars": 66,
+   "bytes": 66,
+   "nll": 47.43105697631836,
+   "per_token": 2.7900621750775505,
+   "per_char": 0.718652378429066,
+   "bits_per_byte": 1.0367962224826723
+  }
+ },
+ {
+  "tr": {
+   "text": "Türkiye'nin başkenti Ankara'dır ve en kalabalık şehri İstanbul'dur.",
+   "tokens": 32,
+   "chars": 67,
+   "bytes": 73,
+   "nll": 160.83001708984375,
+   "per_token": 5.025938034057617,
+   "per_char": 2.4004480162663246,
+   "bits_per_byte": 3.1784749052274632
+  },
+  "en": {
+   "text": "The capital of Turkey is Ankara and its most populous city is Istanbul.",
+   "tokens": 14,
+   "chars": 71,
+   "bytes": 71,
+   "nll": 41.60563659667969,
+   "per_token": 2.9718311854771207,
+   "per_char": 0.5859948816433759,
+   "bits_per_byte": 0.8454119097332135
+  }
+ },
+ {
+  "tr": {
+   "text": "Öğrenciler sınavdan önce bütün gece ders çalıştılar.",
+   "tokens": 31,
+   "chars": 52,
+   "bytes": 62,
+   "nll": 158.53195190429688,
+   "per_token": 5.113933932396673,
+   "per_char": 3.04869138277494,
+   "bits_per_byte": 3.688923561851238
+  },
+  "en": {
+   "text": "The students studied all night before the exam.",
+   "tokens": 9,
+   "chars": 47,
+   "bytes": 47,
+   "nll": 43.872745513916016,
+   "per_token": 4.874749501546224,
+   "per_char": 0.9334626705088513,
+   "bits_per_byte": 1.3467019655980883
+  }
+ },
+ {
+  "tr": {
+   "text": "Kitabı okuduktan sonra arkadaşıma ödünç verdim.",
+   "tokens": 24,
+   "chars": 47,
+   "bytes": 53,
+   "nll": 152.05897521972656,
+   "per_token": 6.335790634155273,
+   "per_char": 3.235297345100565,
+   "bits_per_byte": 4.139145839097307
+  },
+  "en": {
+   "text": "After reading the book, I lent it to my friend.",
+   "tokens": 12,
+   "chars": 47,
+   "bytes": 47,
+   "nll": 39.40109634399414,
+   "per_token": 3.283424695332845,
+   "per_char": 0.838321198808386,
+   "bits_per_byte": 1.2094418361929493
+  }
+ },
+ {
+  "tr": {
+   "text": "Yapay zekâ modelleri büyük miktarda metinle eğitiliyor.",
+   "tokens": 29,
+   "chars": 55,
+   "bytes": 59,
+   "nll": 168.3042449951172,
+   "per_token": 5.803594655004041,
+   "per_char": 3.0600771817294032,
+   "bits_per_byte": 4.115452535847741
+  },
+  "en": {
+   "text": "Artificial intelligence models are trained on large amounts of text.",
+   "tokens": 12,
+   "chars": 68,
+   "bytes": 68,
+   "nll": 46.32158279418945,
+   "per_token": 3.8601318995157876,
+   "per_char": 0.6811997469733743,
+   "bits_per_byte": 0.9827634968133038
+  }
+ },
+ {
+  "tr": {
+   "text": "İstanbul'dan Ankara'ya giden hızlı tren, sabahın erken saatlerinde yola çıktı. Yolculardan bazıları pencereden dışarıyı seyrederken, diğerleri kitaplarını okuyordu. Kondüktör, trenin gecikmeyeceğini ve öğleden sonra şehre varacaklarını söyledi. Çocuklar ise yolculuğun bitmesini sabırsızlıkla bekliyorlardı.",
+   "tokens": 155,
+   "chars": 307,
+   "bytes": 338,
+   "nll": 778.9000854492188,
+   "per_token": 5.025161841607863,
+   "per_char": 2.5371338288248166,
+   "bits_per_byte": 3.324601451554964
+  },
+  "en": {
+   "text": "The high-speed train from Istanbul to Ankara set off in the early hours of the morning. While some of the passengers watched the view through the window, others were reading their books. The conductor said that the train would not be delayed and that they would arrive in the city in the afternoon. The children, however, were impatiently waiting for the journey to end.",
+   "tokens": 74,
+   "chars": 370,
+   "bytes": 370,
+   "nll": 200.11732482910156,
+   "per_token": 2.7042881733662374,
+   "per_char": 0.5408576346732474,
+   "bits_per_byte": 0.7802926273700288
+  }
+ }
+]
