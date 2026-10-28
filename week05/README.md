@@ -4,7 +4,7 @@
 - Andrej Karpathy — [Building makemore Part 4: Becoming a Backprop Ninja](https://www.youtube.com/watch?v=q8SA3rM6ckI)
 - [Egzersiz notebook'u](https://github.com/karpathy/nn-zero-to-hero/tree/master/lectures/makemore)
 
-**Amaç:** [Hafta 4'teki](../week4/README.md) MLP + BatchNorm modelinin gradient'lerini `loss.backward()` olmadan, elle hesaplamak. [Hafta 2'de](../week2/README.md) tek tek skalerler için `Value` sınıfıyla yaptığımız şeyin aynısı, bu sefer tensörler üzerinde. Yeni olan şey tensörlerin getirdiği iki zorluk: **broadcasting** (toplanan boyut geri dönerken nerede `sum` alınır) ve **indeksleme** (`C[X]`, `logprobs[range(n), Y]` geri dönerken nereye yazar).
+**Amaç:** [Hafta 4'teki](../week04/README.md) MLP + BatchNorm modelinin gradient'lerini `loss.backward()` olmadan, elle hesaplamak. [Hafta 2'de](../week02/README.md) tek tek skalerler için `Value` sınıfıyla yaptığımız şeyin aynısı, bu sefer tensörler üzerinde. Yeni olan şey tensörlerin getirdiği iki zorluk: **broadcasting** (toplanan boyut geri dönerken nerede `sum` alınır) ve **indeksleme** (`C[X]`, `logprobs[range(n), Y]` geri dönerken nereye yazar).
 
 Bu hafta çözülen görevler:
 - **Görev 1:** modeli küçük adımlara böl, `retain_grad()` ile her ara değişkenin PyTorch gradient'ini al (Egzersiz 1)

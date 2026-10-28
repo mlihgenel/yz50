@@ -5,7 +5,7 @@
 - [karpathy/build-nanogpt](https://github.com/karpathy/build-nanogpt)
 - Radford vd. 2019, [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) (GPT-2 makalesi)
 - Hugging Face, [openai-community/gpt2](https://huggingface.co/openai-community/gpt2)
-- Veri: hafta 8'deki `week8/input.txt` (Tiny Shakespeare), hafta 9'daki TR/EN paragraf çifti
+- Veri: hafta 8'deki `week08/input.txt` (Tiny Shakespeare), hafta 9'daki TR/EN paragraf çifti
 
 **Amaç:** hafta 8'de yazdığımız GPT'yi GPT-2 (124M) boyutuna ve isimlerine getirmek, OpenAI'ın eğittiği ağırlıkları kendi kodumuza yükleyip Hugging Face ile aynı çıktıyı aldığımızı göstermek. Sonra modeli konuşturuyoruz, rastgele başlatıp eğitime hazır olduğunu iki basit testle kontrol ediyoruz.
 

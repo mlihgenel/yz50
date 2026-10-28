@@ -4,7 +4,7 @@ from pathlib import Path
 
 from value import Value
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "week1"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "week01"))
 from loss import mse  # noqa: E402
 
 

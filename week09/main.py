@@ -1,6 +1,6 @@
 from bpe import BasicTokenizer
 
-path = "../week8/turkce.txt"
+path = "../week08/turkce.txt"
 with open(path, "r", encoding="utf-8") as f:
     text = f.read()
 

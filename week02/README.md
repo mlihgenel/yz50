@@ -467,7 +467,7 @@ MLP(3, [4,4,1])   → len(parameters()) == 41   (16 + 20 + 5)
 
 ### Hafta 1 kodunun yeniden kullanımı
 
-`week1/loss.py`'deki `squared_error` ve `mse`'ye **hiç dokunulmadı**:
+`week01/loss.py`'deki `squared_error` ve `mse`'ye **hiç dokunulmadı**:
 
 ```python
 def squared_error(y_pred, y_true):
@@ -476,7 +476,7 @@ def squared_error(y_pred, y_true):
 
 `y_true - y_pred` burada `float - Value`, yani `__rsub__`; `** 2` de `Value.__pow__`. İkisi de hafta 2'de yazıldığı için, hafta 1'in loss fonksiyonu `Value` grafiğiyle **otomatik olarak** uyumlu — `mse(ypred, ys)` çağrıldığında, dönen `loss` da bir `Value`, üzerinde `.backward()` çalışıyor.
 
-`week2/nn.py`, `week1/loss.py`'yi `sys.path.insert(0, ...)` ile içe aktarıyor — `animations/week1/sahneler.py`'de zaten kullanılan aynı desen (`Path(__file__).resolve().parents[N] / "week1"`), projede tutarlı bir çözüm.
+`week02/nn.py`, `week01/loss.py`'yi `sys.path.insert(0, ...)` ile içe aktarıyor — `animations/week1/sahneler.py`'de zaten kullanılan aynı desen (`Path(__file__).resolve().parents[N] / "week01"`), projede tutarlı bir çözüm.
 
 ---
 

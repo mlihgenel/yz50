@@ -19,7 +19,7 @@ device = "cpu" if get_device() == "mps" else get_device()
 torch.manual_seed(SEED)
 
 # hafta 8'deki Tiny Shakespeare, bu sefer GPT-2 tokenizer'ıyla
-with open("../week8/input.txt", "r", encoding="utf-8") as f:
+with open("../week08/input.txt", "r", encoding="utf-8") as f:
     text = f.read()
 enc = tiktoken.get_encoding("gpt2")
 tokens = torch.tensor(enc.encode(text))

@@ -27,7 +27,7 @@ def show_pieces(name: str, ids: list[int], to_bytes, n: int = 30) -> None:
 if __name__ == "__main__":
     enc = tiktoken.get_encoding("cl100k_base")
 
-    path = "../week8/turkce.txt"
+    path = "../week08/turkce.txt"
     with open(path, "r", encoding="utf-8") as f:
         text = f.read()
     tok = RegexTokenizer(pattern=TR_SPLIT_PATTERN)

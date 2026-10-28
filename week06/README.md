@@ -6,7 +6,7 @@
 - [karpathy/makemore](https://github.com/karpathy/makemore)
 - van den Oord vd. 2016, [WaveNet: A Generative Model for Raw Audio](https://arxiv.org/abs/1609.03499) (isteğe bağlı)
 
-**Amaç:** iki parça. Birincisi [hafta 4'teki](../week4/README.md) dağınık MLP + BatchNorm kodunu `torch.nn` benzeri sınıflara toplamak: `forward(X, C, W1, b1, W2, b2, bngain, bnbias, running_mean, running_var, training, ...)` gibi 12 argümanlı bir fonksiyon yerine, durumunu kendi içinde taşıyan katmanlar. İkincisi bağlamı 3 harften 8'e çıkarmak ve 8 harfi tek seferde düzleştirmek yerine **ikişer ikişer birleştiren bir ağaç** kurmak (WaveNet).
+**Amaç:** iki parça. Birincisi [hafta 4'teki](../week04/README.md) dağınık MLP + BatchNorm kodunu `torch.nn` benzeri sınıflara toplamak: `forward(X, C, W1, b1, W2, b2, bngain, bnbias, running_mean, running_var, training, ...)` gibi 12 argümanlı bir fonksiyon yerine, durumunu kendi içinde taşıyan katmanlar. İkincisi bağlamı 3 harften 8'e çıkarmak ve 8 harfi tek seferde düzleştirmek yerine **ikişer ikişer birleştiren bir ağaç** kurmak (WaveNet).
 
 Bu hafta çözülen görevler:
 - **Görev 1:** `Linear`, `BatchNorm1d`, `Tanh`, `Embedding`, `Flatten`, `Sequential`; model tek bir `Sequential`, loss eğrisi düzeltildi

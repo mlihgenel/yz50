@@ -6,7 +6,7 @@
 - Bengio et al. 2003 — [A Neural Probabilistic Language Model](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf)
 - [karpathy/makemore](https://github.com/karpathy/makemore)
 
-**Amaç:** [Hafta 3'teki](../week3/README.md) bigram/trigram modellerinin duvarına çarptığı yerden devam etmek. Bigram tek harfe, trigram iki harfe bakıyordu ve bağlam büyüdükçe sayım tablosu (ya da one-hot weight matrix) katlanarak şişiyordu: `vocab_size^n`. Bengio 2003'ün çözümü: her harfi **öğrenilen küçük bir vektörle** (embedding) temsil et, bağlamı bu vektörleri yan yana ekleyerek kur ve araya bir **gizli katman** koy. Böylece bağlam penceresi büyürken parametre sayısı lineer artar.
+**Amaç:** [Hafta 3'teki](../week03/README.md) bigram/trigram modellerinin duvarına çarptığı yerden devam etmek. Bigram tek harfe, trigram iki harfe bakıyordu ve bağlam büyüdükçe sayım tablosu (ya da one-hot weight matrix) katlanarak şişiyordu: `vocab_size^n`. Bengio 2003'ün çözümü: her harfi **öğrenilen küçük bir vektörle** (embedding) temsil et, bağlamı bu vektörleri yan yana ekleyerek kur ve araya bir **gizli katman** koy. Böylece bağlam penceresi büyürken parametre sayısı lineer artar.
 
 Bu hafta çözülen 8 görev, iki videoya karşılık geliyor:
 - **Görev 1-4 (Part 2):** dataset + embedding + MLP + eğitim + hiperparametre araması
@@ -19,14 +19,14 @@ Bu hafta çözülen 8 görev, iki videoya karşılık geliyor:
 
 | Dosya | Sorumluluk |
 |---|---|
-| `mlp_dataset.py` | `read_names`, `build_vocab` (week3'ten taşındı), `build_dataset` (yeni), `split_dataset` (week3/`trigram.py`'den taşındı) |
+| `mlp_dataset.py` | `read_names`, `build_vocab` (week03'ten taşındı), `build_dataset` (yeni), `split_dataset` (week03/`trigram.py`'den taşındı) |
 | `mlp_model.py` | `init_embedding`, `init_weights`, `init_batchnorm`, `dropout`, `forward`, `sample_name` |
 | `mlp_lr_scheduler.py` | `warmup_cosine_lr` — task'ta yok, kendi eklediğim bonus |
 | `mlp_viz.py` | `plot_lr_search`, `plot_lr_schedule`, `plot_embeddings`, `plot_tanh_saturation` |
 | `main.py` | eğitim akışı — en iyi bulunan konfigürasyonu koşturur, `split_loss` ile train/dev ölçer |
 | `experiments.py` | tek seferlik deney/teşhis komutları (`train`, `lr_search`, `lr_schedule`, `tanh`, `embeddings`) — haftanın **başlangıç** hiperparametrelerini dondurur |
 | `turkish_mlp.py` | görev 7 — `main.py`'nin Türkçe veri için ayrı ayarlanmış kopyası |
-| `names.txt`, `turkish_names.txt` | week3'ten kopyalandı |
+| `names.txt`, `turkish_names.txt` | week03'ten kopyalandı |
 
 ---
 
@@ -148,7 +148,7 @@ Grafikte loss'un en dik düştüğü bölge iyi `lr` adayını verir; sağ taraf
 
 ### 3.4 Train / dev / test
 
-`split_dataset` week3'ün `trigram.py`'sinden taşındı — bölme **kelime seviyesinde** yapılıyor, örnek seviyesinde değil. Aynı kelimeden türeyen örnekler farklı setlere dağılmasın diye:
+`split_dataset` week03'ün `trigram.py`'sinden taşındı — bölme **kelime seviyesinde** yapılıyor, örnek seviyesinde değil. Aynı kelimeden türeyen örnekler farklı setlere dağılmasın diye:
 
 ```
 train: 182535  |  dev: 22667  |  test: 22944   (%80 / %10 / %10)
@@ -480,7 +480,7 @@ Son sütun, 3 karakterlik bağlamı tamamen ezberleyen bir modelin aynı veri ü
 
 ## 10. Türkçe isimlerle aynı model (`turkish_mlp.py`)
 
-Görev 7: week3'teki `turkish_names.py` deseninin aynısı — `turkish_mlp.py`, `main.py`'nin bağımsız bir kopyası, hiperparametreler tepesinde. Model kodunun (`mlp_model.py`, `mlp_dataset.py`) **tek satırına** dokunulmadı; `build_vocab` alfabeyi veriden çıkardığı için Türkçe karakterler kendiliğinden alfabeye girdi.
+Görev 7: week03'teki `turkish_names.py` deseninin aynısı — `turkish_mlp.py`, `main.py`'nin bağımsız bir kopyası, hiperparametreler tepesinde. Model kodunun (`mlp_model.py`, `mlp_dataset.py`) **tek satırına** dokunulmadı; `build_vocab` alfabeyi veriden çıkardığı için Türkçe karakterler kendiliğinden alfabeye girdi.
 
 | | kelime | token | vocab | alfabe farkı |
 |---|---|---|---|---|

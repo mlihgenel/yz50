@@ -4,7 +4,7 @@
 - Andrej Karpathy, [Let's build the GPT Tokenizer](https://www.youtube.com/watch?v=zduSFxRajkE)
 - [karpathy/minbpe](https://github.com/karpathy/minbpe)
 - [openai/tiktoken](https://github.com/openai/tiktoken) (`cl100k_base`, GPT-4 tokenizer'ı)
-- Veri: hafta 8'deki `week8/turkce.txt` (Nutuk, ~1.1M karakter)
+- Veri: hafta 8'deki `week08/turkce.txt` (Nutuk, ~1.1M karakter)
 
 **Amaç:** hafta 8'e kadar karakter düzeyinde tokenizer kullandık. Bu hafta metnin önce UTF-8 byte'larına, sonra BPE ile öğrenilen token'lara nasıl çevrildiğini sıfırdan yazıyoruz. GPT-4'ün regex ön bölmesini ekleyip Türkçenin bu tokenizer'larda neden pahalı olduğuna bakıyoruz. Sonunda hafta 8'deki GPT'yi kendi tokenizer'ımızla yeniden eğitiyoruz.
 

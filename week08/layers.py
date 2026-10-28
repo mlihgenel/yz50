@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-# week7'deki Head, sadece dropout eklendi
+# week07'deki Head, sadece dropout eklendi
 class Head(nn.Module):
     def __init__(self, n_embd, head_size, block_size, dropout=0.0):
         super().__init__()
@@ -135,7 +135,7 @@ class GPTLanguageModel(nn.Module):
         self.use_ln = use_ln
         self.token_emb = nn.Embedding(vocab_size, n_embd)
         self.pos_emb = nn.Embedding(block_size, n_embd)
-        # n_head=1 -> week7'deki tek 32'lik head, n_head=4 -> 4 tane 8'lik head
+        # n_head=1 -> week07'deki tek 32'lik head, n_head=4 -> 4 tane 8'lik head
         blocks = []
         for _ in range(n_layer):
             blocks.append(Block(n_embd, n_head, block_size, use_ffwd, use_residual, use_ln, dropout))

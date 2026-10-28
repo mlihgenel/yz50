@@ -3,7 +3,7 @@ __pycache__/
 .DS_Store
 .venv/
 animations/
-week8/checkpoints/
+week08/checkpoints/
 *.zip
-week9/checkpoints/
-week9/bpe_cache.pt
+week09/checkpoints/
+week09/bpe_cache.pt

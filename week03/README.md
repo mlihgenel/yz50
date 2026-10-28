@@ -10,7 +10,7 @@ Amaç: bir sonraki karakteri, bir önceki karakter(ler)e bakarak tahmin eden bir
 1. **Sayarak** — bigram'ları sayıp doğrudan olasılığa çevirmek (kapalı-form çözüm).
 2. **Gradient descent ile** — tek katmanlı bir sinir ağını, aynı problemi optimize ederek öğretmek.
 
-İki yöntemin de aynı optimal çözüme yakınsadığı gösteriliyor — [[Hafta 2'deki `Value.backward()`]](../week2/README.md) mekanizmasının PyTorch tensor'larıyla aynı şekilde işlediği burada da doğrulanıyor.
+İki yöntemin de aynı optimal çözüme yakınsadığı gösteriliyor — [[Hafta 2'deki `Value.backward()`]](../week02/README.md) mekanizmasının PyTorch tensor'larıyla aynı şekilde işlediği burada da doğrulanıyor.
 
 ---
 
@@ -108,7 +108,7 @@ Olasılıklar `0-1` arasında olduğu için $\log(P) \le 0$. Bir loss fonksiyonu
 
 ### Neden ortalama?
 
-Toplam, kelime sayısı arttıkça büyür — farklı büyüklükteki veri kümeleri kıyaslanamaz olur. Ortalama, "bigram başına ortalama kayıp" sorusuna, veri boyutundan bağımsız bir cevap verir. ([[Hafta 1'deki MSE'de aynı gerekçe]](../week1/README.md) — toplam yerine ortalama.)
+Toplam, kelime sayısı arttıkça büyür — farklı büyüklükteki veri kümeleri kıyaslanamaz olur. Ortalama, "bigram başına ortalama kayıp" sorusuna, veri boyutundan bağımsız bir cevap verir. ([[Hafta 1'deki MSE'de aynı gerekçe]](../week01/README.md) — toplam yerine ortalama.)
 
 **Sonuç (İngilizce, sayarak model):** ~2.4 civarı — Karpathy'nin videosundaki (~2.45-2.47) ile aynı bölgede.
 
@@ -145,7 +145,7 @@ def init_weights(vocab_size, generator):
     return torch.randn((vocab_size, vocab_size), generator=generator, requires_grad=True)
 ```
 
-`requires_grad=True` — [[Hafta 2'deki `Value.grad`]](../week2/README.md) alanının PyTorch karşılığı: bu tensor'un gradyanı otomatik hesaplanıp tutulacak.
+`requires_grad=True` — [[Hafta 2'deki `Value.grad`]](../week02/README.md) alanının PyTorch karşılığı: bu tensor'un gradyanı otomatik hesaplanıp tutulacak.
 
 ### 4.3 Forward pass — manuel softmax
 
