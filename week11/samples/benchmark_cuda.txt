@@ -1,0 +1,40 @@
+cihaz: NVIDIA A100-SXM4-40GB | B=16, T=1024 (16,384 token/adım)
+[0] fp32 (başlangıç)
+    1038 ms/adım, 15,790 token/sn  
+[1] + TF32
+    378 ms/adım, 43,291 token/sn  
+[2] + bf16 / fp16 autocast
+    341 ms/adım, 48,063 token/sn  
+[3] + torch.compile
+    138 ms/adım, 118,812 token/sn  
+[4] + flash attention
+    97 ms/adım, 169,180 token/sn  
+[5] + vocab 50,304
+    93 ms/adım, 176,188 token/sn  
+[6] tek başına: autocast
+    341 ms/adım, 48,076 token/sn  
+[7] tek başına: torch.compile
+    915 ms/adım, 17,914 token/sn  
+[8] tek başına: flash attention
+    774 ms/adım, 21,172 token/sn  
+[9] tek başına: vocab 50,304
+    1037 ms/adım, 15,792 token/sn  
+[10] compile'sız: autocast + flash + 50,304
+    126 ms/adım, 130,525 token/sn  
+[11] compile'sız, autocast'sız: flash + 50,304
+    774 ms/adım, 21,173 token/sn  
+
+| adım | ms/adım | token/sn | hızlanma | not |
+|---|---:|---:|---:|---|
+| fp32 (başlangıç) | 1038 | 15,790 | 1.00× |  |
+| + TF32 | 378 | 43,291 | 2.74× |  |
+| + bf16 / fp16 autocast | 341 | 48,063 | 3.04× |  |
+| + torch.compile | 138 | 118,812 | 7.52× |  |
+| + flash attention | 97 | 169,180 | 10.71× |  |
+| + vocab 50,304 | 93 | 176,188 | 11.16× |  |
+| tek başına: autocast | 341 | 48,076 | 3.04× |  |
+| tek başına: torch.compile | 915 | 17,914 | 1.13× |  |
+| tek başına: flash attention | 774 | 21,172 | 1.34× |  |
+| tek başına: vocab 50,304 | 1037 | 15,792 | 1.00× |  |
+| compile'sız: autocast + flash + 50,304 | 126 | 130,525 | 8.27× |  |
+| compile'sız, autocast'sız: flash + 50,304 | 774 | 21,173 | 1.34× |  |

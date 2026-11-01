@@ -1,0 +1,40 @@
+cihaz: Apple M1 (MPS) | B=4, T=256 (1,024 token/adım)
+[0] fp32 (başlangıç)
+    978 ms/adım, 1,047 token/sn  
+[1] + TF32
+    962 ms/adım, 1,064 token/sn  TF32 NVIDIA'ya özgü; MPS'te matmul zaten fp32, ayar etkisiz
+[2] + bf16 / fp16 autocast
+    985 ms/adım, 1,040 token/sn  M1'de bf16 yok, fp16 + GradScaler
+[3] + torch.compile
+    1490 ms/adım, 687 token/sn  
+[4] + flash attention
+    1456 ms/adım, 703 token/sn  CUDA flash çekirdeği yok, MPS'in kendi SDPA çekirdeği
+[5] + vocab 50,304
+    1538 ms/adım, 666 token/sn  
+[6] tek başına: autocast
+    885 ms/adım, 1,157 token/sn  M1'de bf16 yok, fp16 + GradScaler
+[7] tek başına: torch.compile
+    1451 ms/adım, 706 token/sn  
+[8] tek başına: flash attention
+    996 ms/adım, 1,028 token/sn  CUDA flash çekirdeği yok, MPS'in kendi SDPA çekirdeği
+[9] tek başına: vocab 50,304
+    1097 ms/adım, 933 token/sn  
+[10] compile'sız: autocast + flash + 50,304
+    1055 ms/adım, 970 token/sn  TF32 NVIDIA'ya özgü; MPS'te matmul zaten fp32, ayar etkisiz; M1'de bf16 yok, fp16 + GradScaler; CUDA flash çekirdeği yok, MPS'in kendi SDPA çekirdeği
+[11] compile'sız, autocast'sız: flash + 50,304
+    1068 ms/adım, 959 token/sn  CUDA flash çekirdeği yok, MPS'in kendi SDPA çekirdeği
+
+| adım | ms/adım | token/sn | hızlanma | not |
+|---|---:|---:|---:|---|
+| fp32 (başlangıç) | 978 | 1,047 | 1.00× |  |
+| + TF32 | 962 | 1,064 | 1.02× | TF32 NVIDIA'ya özgü; MPS'te matmul zaten fp32, ayar etkisiz |
+| + bf16 / fp16 autocast | 985 | 1,040 | 0.99× | M1'de bf16 yok, fp16 + GradScaler |
+| + torch.compile | 1490 | 687 | 0.66× |  |
+| + flash attention | 1456 | 703 | 0.67× | CUDA flash çekirdeği yok, MPS'in kendi SDPA çekirdeği |
+| + vocab 50,304 | 1538 | 666 | 0.64× |  |
+| tek başına: autocast | 885 | 1,157 | 1.11× | M1'de bf16 yok, fp16 + GradScaler |
+| tek başına: torch.compile | 1451 | 706 | 0.67× |  |
+| tek başına: flash attention | 996 | 1,028 | 0.98× | CUDA flash çekirdeği yok, MPS'in kendi SDPA çekirdeği |
+| tek başına: vocab 50,304 | 1097 | 933 | 0.89× |  |
+| compile'sız: autocast + flash + 50,304 | 1055 | 970 | 0.93× | TF32 NVIDIA'ya özgü; MPS'te matmul zaten fp32, ayar etkisiz; M1'de bf16 yok, fp16 + GradScaler; CUDA flash çekirdeği yok, MPS'in kendi SDPA çekirdeği |
+| compile'sız, autocast'sız: flash + 50,304 | 1068 | 959 | 0.92× | CUDA flash çekirdeği yok, MPS'in kendi SDPA çekirdeği |
