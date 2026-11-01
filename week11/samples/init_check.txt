@@ -1,0 +1,6 @@
+tying'siz 163,037,184 | tying'li 124,439,808 | kazanç 38,597,376 (%23.7) = 50257 × 768 = 38,597,376
+oyuncak: 24 katkıdan sonra std 4.90 (√24 = 4.90), ölçekli 1.00
+PyTorch varsayılanı          | embedding std 0.999 -> 12. blok sonrası 1.255 (1.26×) | ilk loss 11.0028 | logits std 0.577
+std 0.02, ölçeklemesiz       | embedding std 0.028 -> 12. blok sonrası 1.511 (53.47×) | ilk loss 10.9125 | logits std 0.555
+std 0.02 + 1/√(2·n_layer)    | embedding std 0.028 -> 12. blok sonrası 0.290 (10.27×) | ilk loss 10.9505 | logits std 0.555
+ln(50257) = 10.8249

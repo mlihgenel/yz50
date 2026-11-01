@@ -1,0 +1,334 @@
+cihaz cuda | veri shakespeare | vocab 50257 -> 50304 | 4,096 token/adım = 1 × (4×1024)
+301,966 token, 1 epoch = 73 batch (4×1024)
+parametre: 124,475,904
+step    0 | val 10.9535
+step    0 | loss 10.9287 | lr 3.00e-04 | norm  30.425 | 228 ms | 17,958 tok/s | epoch 0
+step    1 | loss 9.5112 | lr 3.00e-04 | norm   6.193 | 102 ms | 40,162 tok/s | epoch 0
+step    2 | loss 9.0229 | lr 3.00e-04 | norm   2.638 | 102 ms | 40,222 tok/s | epoch 0
+step    3 | loss 8.8034 | lr 3.00e-04 | norm   3.786 | 102 ms | 40,285 tok/s | epoch 0
+step    4 | loss 8.4051 | lr 3.00e-04 | norm   3.063 | 102 ms | 40,266 tok/s | epoch 0
+step    5 | loss 8.0185 | lr 3.00e-04 | norm   2.277 | 102 ms | 40,251 tok/s | epoch 0
+step    6 | loss 7.9596 | lr 3.00e-04 | norm   2.851 | 102 ms | 40,284 tok/s | epoch 0
+step    7 | loss 7.7153 | lr 3.00e-04 | norm   1.976 | 102 ms | 40,334 tok/s | epoch 0
+step    8 | loss 7.6424 | lr 3.00e-04 | norm   1.861 | 102 ms | 40,351 tok/s | epoch 0
+step    9 | loss 7.3867 | lr 3.00e-04 | norm   2.117 | 101 ms | 40,367 tok/s | epoch 0
+step   10 | loss 7.4180 | lr 3.00e-04 | norm   1.825 | 101 ms | 40,384 tok/s | epoch 0
+step   11 | loss 7.3895 | lr 3.00e-04 | norm   1.612 | 101 ms | 40,392 tok/s | epoch 0
+step   12 | loss 7.4635 | lr 3.00e-04 | norm   1.458 | 102 ms | 40,288 tok/s | epoch 0
+step   13 | loss 7.3923 | lr 3.00e-04 | norm   1.720 | 102 ms | 40,103 tok/s | epoch 0
+step   14 | loss 7.0366 | lr 3.00e-04 | norm   1.712 | 102 ms | 40,038 tok/s | epoch 0
+step   15 | loss 7.0289 | lr 3.00e-04 | norm   1.394 | 102 ms | 40,153 tok/s | epoch 0
+step   16 | loss 6.8343 | lr 3.00e-04 | norm   1.221 | 102 ms | 40,239 tok/s | epoch 0
+step   17 | loss 6.6611 | lr 3.00e-04 | norm   1.372 | 102 ms | 40,228 tok/s | epoch 0
+step   18 | loss 6.7666 | lr 3.00e-04 | norm   1.296 | 102 ms | 40,292 tok/s | epoch 0
+step   19 | loss 6.7628 | lr 3.00e-04 | norm   1.182 | 102 ms | 40,318 tok/s | epoch 0
+step   20 | loss 6.9451 | lr 3.00e-04 | norm   1.081 | 101 ms | 40,361 tok/s | epoch 0
+step   21 | loss 6.7623 | lr 3.00e-04 | norm   1.557 | 101 ms | 40,369 tok/s | epoch 0
+step   22 | loss 6.7215 | lr 3.00e-04 | norm   1.325 | 102 ms | 40,332 tok/s | epoch 0
+step   23 | loss 6.7989 | lr 3.00e-04 | norm   8.342 | 102 ms | 40,259 tok/s | epoch 0
+step   24 | loss 6.8247 | lr 3.00e-04 | norm   0.901 | 102 ms | 40,274 tok/s | epoch 0
+step   25 | val 6.7402
+step   25 | loss 6.8368 | lr 3.00e-04 | norm   1.081 | 102 ms | 40,262 tok/s | epoch 0
+step   26 | loss 6.6803 | lr 3.00e-04 | norm   1.113 | 102 ms | 40,334 tok/s | epoch 0
+step   27 | loss 6.7300 | lr 3.00e-04 | norm   0.936 | 101 ms | 40,371 tok/s | epoch 0
+step   28 | loss 6.7657 | lr 3.00e-04 | norm   1.111 | 101 ms | 40,389 tok/s | epoch 0
+step   29 | loss 6.5750 | lr 3.00e-04 | norm   1.114 | 101 ms | 40,367 tok/s | epoch 0
+step   30 | loss 6.5298 | lr 3.00e-04 | norm   1.102 | 102 ms | 40,313 tok/s | epoch 0
+step   31 | loss 6.4454 | lr 3.00e-04 | norm   1.199 | 102 ms | 40,263 tok/s | epoch 0
+step   32 | loss 6.4751 | lr 3.00e-04 | norm   0.794 | 102 ms | 40,219 tok/s | epoch 0
+step   33 | loss 6.6056 | lr 3.00e-04 | norm   0.867 | 102 ms | 40,248 tok/s | epoch 0
+step   34 | loss 6.6311 | lr 3.00e-04 | norm   1.585 | 102 ms | 40,283 tok/s | epoch 0
+step   35 | loss 6.6141 | lr 3.00e-04 | norm   1.282 | 102 ms | 40,286 tok/s | epoch 0
+step   36 | loss 6.4545 | lr 3.00e-04 | norm   1.412 | 102 ms | 40,333 tok/s | epoch 0
+step   37 | loss 6.5869 | lr 3.00e-04 | norm   1.096 | 101 ms | 40,356 tok/s | epoch 0
+step   38 | loss 6.3880 | lr 3.00e-04 | norm   0.957 | 102 ms | 40,336 tok/s | epoch 0
+step   39 | loss 6.2684 | lr 3.00e-04 | norm   1.497 | 102 ms | 40,319 tok/s | epoch 0
+step   40 | loss 6.3588 | lr 3.00e-04 | norm   1.105 | 101 ms | 40,358 tok/s | epoch 0
+step   41 | loss 6.4561 | lr 3.00e-04 | norm   1.130 | 102 ms | 40,345 tok/s | epoch 0
+step   42 | loss 6.2841 | lr 3.00e-04 | norm   1.260 | 102 ms | 40,333 tok/s | epoch 0
+step   43 | loss 6.2611 | lr 3.00e-04 | norm   1.046 | 102 ms | 40,331 tok/s | epoch 0
+step   44 | loss 6.4212 | lr 3.00e-04 | norm   1.127 | 101 ms | 40,367 tok/s | epoch 0
+step   45 | loss 6.3356 | lr 3.00e-04 | norm   1.304 | 101 ms | 40,358 tok/s | epoch 0
+step   46 | loss 6.1861 | lr 3.00e-04 | norm   0.924 | 102 ms | 40,313 tok/s | epoch 0
+step   47 | loss 6.2068 | lr 3.00e-04 | norm   1.073 | 102 ms | 40,322 tok/s | epoch 0
+step   48 | loss 6.2124 | lr 3.00e-04 | norm   0.925 | 101 ms | 40,383 tok/s | epoch 0
+step   49 | loss 6.1202 | lr 3.00e-04 | norm   0.803 | 101 ms | 40,385 tok/s | epoch 0
+step   50 | val 6.4632
+step   50 | loss 6.2512 | lr 3.00e-04 | norm   0.771 | 102 ms | 40,267 tok/s | epoch 0
+step   51 | loss 6.1899 | lr 3.00e-04 | norm   1.270 | 102 ms | 40,331 tok/s | epoch 0
+step   52 | loss 6.5420 | lr 3.00e-04 | norm   1.126 | 102 ms | 40,338 tok/s | epoch 0
+step   53 | loss 6.4930 | lr 3.00e-04 | norm   1.143 | 102 ms | 40,335 tok/s | epoch 0
+step   54 | loss 6.2915 | lr 3.00e-04 | norm   0.925 | 101 ms | 40,360 tok/s | epoch 0
+step   55 | loss 6.3998 | lr 3.00e-04 | norm   0.917 | 102 ms | 40,313 tok/s | epoch 0
+step   56 | loss 6.6613 | lr 3.00e-04 | norm   1.043 | 102 ms | 40,191 tok/s | epoch 0
+step   57 | loss 6.5860 | lr 3.00e-04 | norm   1.120 | 102 ms | 40,175 tok/s | epoch 0
+step   58 | loss 6.2773 | lr 3.00e-04 | norm   0.953 | 102 ms | 40,259 tok/s | epoch 0
+step   59 | loss 6.4728 | lr 3.00e-04 | norm   1.413 | 102 ms | 40,274 tok/s | epoch 0
+step   60 | loss 6.3025 | lr 3.00e-04 | norm   0.749 | 102 ms | 40,321 tok/s | epoch 0
+step   61 | loss 6.2848 | lr 3.00e-04 | norm   1.221 | 102 ms | 40,295 tok/s | epoch 0
+step   62 | loss 6.3972 | lr 3.00e-04 | norm   1.009 | 102 ms | 40,335 tok/s | epoch 0
+step   63 | loss 6.2526 | lr 3.00e-04 | norm   1.194 | 101 ms | 40,372 tok/s | epoch 0
+step   64 | loss 6.0918 | lr 3.00e-04 | norm   0.947 | 101 ms | 40,379 tok/s | epoch 0
+step   65 | loss 6.2646 | lr 3.00e-04 | norm   0.963 | 102 ms | 40,298 tok/s | epoch 0
+step   66 | loss 6.4799 | lr 3.00e-04 | norm   1.144 | 102 ms | 40,313 tok/s | epoch 0
+step   67 | loss 6.3600 | lr 3.00e-04 | norm   1.225 | 102 ms | 40,343 tok/s | epoch 0
+step   68 | loss 6.3271 | lr 3.00e-04 | norm   0.939 | 102 ms | 40,267 tok/s | epoch 0
+step   69 | loss 6.1615 | lr 3.00e-04 | norm   1.110 | 102 ms | 40,275 tok/s | epoch 0
+step   70 | loss 6.0502 | lr 3.00e-04 | norm   1.052 | 102 ms | 40,326 tok/s | epoch 0
+step   71 | loss 6.3502 | lr 3.00e-04 | norm   0.883 | 102 ms | 40,298 tok/s | epoch 0
+step   72 | loss 6.3755 | lr 3.00e-04 | norm   1.231 | 102 ms | 40,335 tok/s | epoch 1
+step   73 | loss 6.1959 | lr 3.00e-04 | norm   1.122 | 102 ms | 40,310 tok/s | epoch 1
+step   74 | loss 6.1748 | lr 3.00e-04 | norm   1.021 | 102 ms | 40,307 tok/s | epoch 1
+step   75 | val 6.2470
+step   75 | loss 6.1933 | lr 3.00e-04 | norm   1.240 | 102 ms | 40,147 tok/s | epoch 1
+step   76 | loss 6.2030 | lr 3.00e-04 | norm   1.491 | 102 ms | 40,216 tok/s | epoch 1
+step   77 | loss 5.9656 | lr 3.00e-04 | norm   1.481 | 102 ms | 40,247 tok/s | epoch 1
+step   78 | loss 5.8732 | lr 3.00e-04 | norm   1.465 | 102 ms | 40,342 tok/s | epoch 1
+step   79 | loss 5.8474 | lr 3.00e-04 | norm   1.068 | 102 ms | 40,280 tok/s | epoch 1
+step   80 | loss 5.8156 | lr 3.00e-04 | norm   1.029 | 102 ms | 40,319 tok/s | epoch 1
+step   81 | loss 5.9156 | lr 3.00e-04 | norm   0.985 | 102 ms | 40,347 tok/s | epoch 1
+step   82 | loss 5.8124 | lr 3.00e-04 | norm   1.063 | 102 ms | 40,234 tok/s | epoch 1
+step   83 | loss 6.0268 | lr 3.00e-04 | norm   1.135 | 102 ms | 40,215 tok/s | epoch 1
+step   84 | loss 6.0687 | lr 3.00e-04 | norm   1.175 | 102 ms | 40,258 tok/s | epoch 1
+step   85 | loss 6.1392 | lr 3.00e-04 | norm   1.675 | 102 ms | 40,275 tok/s | epoch 1
+step   86 | loss 6.1473 | lr 3.00e-04 | norm   1.302 | 102 ms | 40,281 tok/s | epoch 1
+step   87 | loss 5.9919 | lr 3.00e-04 | norm   1.263 | 102 ms | 40,302 tok/s | epoch 1
+step   88 | loss 5.9968 | lr 3.00e-04 | norm   1.073 | 102 ms | 40,352 tok/s | epoch 1
+step   89 | loss 5.8518 | lr 3.00e-04 | norm   1.181 | 101 ms | 40,357 tok/s | epoch 1
+step   90 | loss 5.8484 | lr 3.00e-04 | norm   1.064 | 101 ms | 40,372 tok/s | epoch 1
+step   91 | loss 6.0635 | lr 3.00e-04 | norm   1.009 | 102 ms | 40,345 tok/s | epoch 1
+step   92 | loss 5.9872 | lr 3.00e-04 | norm   0.938 | 102 ms | 40,251 tok/s | epoch 1
+step   93 | loss 6.2097 | lr 3.00e-04 | norm   1.036 | 102 ms | 40,270 tok/s | epoch 1
+step   94 | loss 5.9904 | lr 3.00e-04 | norm   1.262 | 102 ms | 40,279 tok/s | epoch 1
+step   95 | loss 6.1562 | lr 3.00e-04 | norm   0.859 | 102 ms | 40,317 tok/s | epoch 1
+step   96 | loss 6.2557 | lr 3.00e-04 | norm   0.968 | 102 ms | 40,288 tok/s | epoch 1
+step   97 | loss 6.2815 | lr 3.00e-04 | norm   0.936 | 102 ms | 40,307 tok/s | epoch 1
+step   98 | loss 6.2525 | lr 3.00e-04 | norm   0.952 | 102 ms | 40,330 tok/s | epoch 1
+step   99 | loss 6.1194 | lr 3.00e-04 | norm   1.060 | 102 ms | 40,350 tok/s | epoch 1
+step  100 | val 6.2314
+step  100 | loss 6.1865 | lr 3.00e-04 | norm   0.782 | 102 ms | 40,088 tok/s | epoch 1
+step  101 | loss 6.2005 | lr 3.00e-04 | norm   0.909 | 102 ms | 40,216 tok/s | epoch 1
+step  102 | loss 6.0708 | lr 3.00e-04 | norm   0.849 | 102 ms | 40,206 tok/s | epoch 1
+step  103 | loss 5.9795 | lr 3.00e-04 | norm   0.869 | 102 ms | 40,294 tok/s | epoch 1
+step  104 | loss 5.9264 | lr 3.00e-04 | norm   1.128 | 102 ms | 40,346 tok/s | epoch 1
+step  105 | loss 5.9891 | lr 3.00e-04 | norm   1.008 | 102 ms | 40,348 tok/s | epoch 1
+step  106 | loss 6.1110 | lr 3.00e-04 | norm   0.867 | 102 ms | 40,329 tok/s | epoch 1
+step  107 | loss 6.1473 | lr 3.00e-04 | norm   0.826 | 102 ms | 40,350 tok/s | epoch 1
+step  108 | loss 6.1270 | lr 3.00e-04 | norm   0.988 | 102 ms | 40,337 tok/s | epoch 1
+step  109 | loss 5.9684 | lr 3.00e-04 | norm   0.999 | 102 ms | 40,342 tok/s | epoch 1
+step  110 | loss 6.1298 | lr 3.00e-04 | norm   1.056 | 101 ms | 40,362 tok/s | epoch 1
+step  111 | loss 5.9584 | lr 3.00e-04 | norm   0.938 | 102 ms | 40,345 tok/s | epoch 1
+step  112 | loss 5.8138 | lr 3.00e-04 | norm   0.946 | 102 ms | 40,280 tok/s | epoch 1
+step  113 | loss 5.9168 | lr 3.00e-04 | norm   0.946 | 102 ms | 40,309 tok/s | epoch 1
+step  114 | loss 6.0291 | lr 3.00e-04 | norm   0.854 | 102 ms | 40,343 tok/s | epoch 1
+step  115 | loss 5.8451 | lr 3.00e-04 | norm   1.129 | 101 ms | 40,357 tok/s | epoch 1
+step  116 | loss 5.8741 | lr 3.00e-04 | norm   0.961 | 101 ms | 40,388 tok/s | epoch 1
+step  117 | loss 6.0960 | lr 3.00e-04 | norm   0.909 | 101 ms | 40,373 tok/s | epoch 1
+step  118 | loss 5.9804 | lr 3.00e-04 | norm   0.781 | 102 ms | 40,347 tok/s | epoch 1
+step  119 | loss 5.8538 | lr 3.00e-04 | norm   0.770 | 102 ms | 40,339 tok/s | epoch 1
+step  120 | loss 5.8333 | lr 3.00e-04 | norm   1.067 | 102 ms | 40,215 tok/s | epoch 1
+step  121 | loss 5.8568 | lr 3.00e-04 | norm   0.882 | 102 ms | 40,244 tok/s | epoch 1
+step  122 | loss 5.7939 | lr 3.00e-04 | norm   0.895 | 102 ms | 40,202 tok/s | epoch 1
+step  123 | loss 5.9098 | lr 3.00e-04 | norm   1.002 | 102 ms | 40,261 tok/s | epoch 1
+step  124 | loss 5.8707 | lr 3.00e-04 | norm   0.745 | 102 ms | 40,273 tok/s | epoch 1
+step  125 | val 6.1776
+step  125 | loss 6.2258 | lr 3.00e-04 | norm   1.254 | 102 ms | 40,226 tok/s | epoch 1
+step  126 | loss 6.1716 | lr 3.00e-04 | norm   1.286 | 102 ms | 40,275 tok/s | epoch 1
+step  127 | loss 5.9821 | lr 3.00e-04 | norm   1.035 | 102 ms | 40,307 tok/s | epoch 1
+step  128 | loss 6.1147 | lr 3.00e-04 | norm   1.014 | 102 ms | 40,338 tok/s | epoch 1
+step  129 | loss 6.3674 | lr 3.00e-04 | norm   1.260 | 102 ms | 40,293 tok/s | epoch 1
+step  130 | loss 6.2561 | lr 3.00e-04 | norm   0.957 | 102 ms | 40,315 tok/s | epoch 1
+step  131 | loss 5.9635 | lr 3.00e-04 | norm   1.250 | 102 ms | 40,327 tok/s | epoch 1
+step  132 | loss 6.1213 | lr 3.00e-04 | norm   1.129 | 102 ms | 40,295 tok/s | epoch 1
+step  133 | loss 6.0084 | lr 3.00e-04 | norm   0.858 | 102 ms | 40,334 tok/s | epoch 1
+step  134 | loss 5.9654 | lr 3.00e-04 | norm   0.937 | 102 ms | 40,333 tok/s | epoch 1
+step  135 | loss 6.0227 | lr 3.00e-04 | norm   1.140 | 102 ms | 40,315 tok/s | epoch 1
+step  136 | loss 5.8961 | lr 3.00e-04 | norm   1.205 | 102 ms | 40,352 tok/s | epoch 1
+step  137 | loss 5.7453 | lr 3.00e-04 | norm   0.984 | 102 ms | 40,325 tok/s | epoch 1
+step  138 | loss 5.9411 | lr 3.00e-04 | norm   1.083 | 102 ms | 40,222 tok/s | epoch 1
+step  139 | loss 6.0651 | lr 3.00e-04 | norm   1.368 | 102 ms | 40,202 tok/s | epoch 1
+step  140 | loss 5.9667 | lr 3.00e-04 | norm   1.112 | 102 ms | 40,275 tok/s | epoch 1
+step  141 | loss 5.9473 | lr 3.00e-04 | norm   1.040 | 102 ms | 40,321 tok/s | epoch 1
+step  142 | loss 5.8026 | lr 3.00e-04 | norm   1.266 | 101 ms | 40,371 tok/s | epoch 1
+step  143 | loss 5.6711 | lr 3.00e-04 | norm   1.011 | 101 ms | 40,362 tok/s | epoch 1
+step  144 | loss 6.1006 | lr 3.00e-04 | norm   0.878 | 102 ms | 40,314 tok/s | epoch 1
+step  145 | loss 6.0279 | lr 3.00e-04 | norm   1.113 | 102 ms | 40,230 tok/s | epoch 2
+step  146 | loss 6.0169 | lr 3.00e-04 | norm   1.058 | 102 ms | 40,266 tok/s | epoch 2
+step  147 | loss 6.0266 | lr 3.00e-04 | norm   1.091 | 102 ms | 40,273 tok/s | epoch 2
+step  148 | loss 6.0474 | lr 3.00e-04 | norm   1.211 | 102 ms | 40,312 tok/s | epoch 2
+step  149 | loss 6.0506 | lr 3.00e-04 | norm   1.418 | 102 ms | 40,259 tok/s | epoch 2
+step  150 | val 5.9937
+step  150 | loss 5.7826 | lr 3.00e-04 | norm   1.247 | 102 ms | 40,197 tok/s | epoch 2
+step  151 | loss 5.6791 | lr 3.00e-04 | norm   1.415 | 102 ms | 40,218 tok/s | epoch 2
+step  152 | loss 5.6720 | lr 3.00e-04 | norm   1.143 | 102 ms | 40,255 tok/s | epoch 2
+step  153 | loss 5.6230 | lr 3.00e-04 | norm   1.052 | 102 ms | 40,297 tok/s | epoch 2
+step  154 | loss 5.7106 | lr 3.00e-04 | norm   1.164 | 102 ms | 40,300 tok/s | epoch 2
+step  155 | loss 5.5965 | lr 3.00e-04 | norm   1.000 | 102 ms | 40,351 tok/s | epoch 2
+step  156 | loss 5.7989 | lr 3.00e-04 | norm   1.025 | 102 ms | 40,292 tok/s | epoch 2
+step  157 | loss 5.8329 | lr 3.00e-04 | norm   1.124 | 102 ms | 40,279 tok/s | epoch 2
+step  158 | loss 5.9022 | lr 3.00e-04 | norm   1.726 | 102 ms | 40,321 tok/s | epoch 2
+step  159 | loss 5.8878 | lr 3.00e-04 | norm   1.381 | 101 ms | 40,361 tok/s | epoch 2
+step  160 | loss 5.7273 | lr 3.00e-04 | norm   1.377 | 101 ms | 40,362 tok/s | epoch 2
+step  161 | loss 5.7287 | lr 3.00e-04 | norm   1.015 | 102 ms | 40,170 tok/s | epoch 2
+step  162 | loss 5.5397 | lr 3.00e-04 | norm   1.015 | 102 ms | 40,073 tok/s | epoch 2
+step  163 | loss 5.5556 | lr 3.00e-04 | norm   0.997 | 102 ms | 40,318 tok/s | epoch 2
+step  164 | loss 5.7801 | lr 3.00e-04 | norm   1.192 | 102 ms | 40,348 tok/s | epoch 2
+step  165 | loss 5.6467 | lr 3.00e-04 | norm   1.022 | 102 ms | 40,332 tok/s | epoch 2
+step  166 | loss 5.8734 | lr 3.00e-04 | norm   1.092 | 102 ms | 40,224 tok/s | epoch 2
+step  167 | loss 5.6347 | lr 3.00e-04 | norm   1.465 | 102 ms | 40,215 tok/s | epoch 2
+step  168 | loss 5.8126 | lr 3.00e-04 | norm   0.890 | 101 ms | 40,367 tok/s | epoch 2
+step  169 | loss 5.9222 | lr 3.00e-04 | norm   0.903 | 101 ms | 40,359 tok/s | epoch 2
+step  170 | loss 5.9873 | lr 3.00e-04 | norm   0.877 | 102 ms | 40,267 tok/s | epoch 2
+step  171 | loss 5.9573 | lr 3.00e-04 | norm   0.954 | 102 ms | 40,205 tok/s | epoch 2
+step  172 | loss 5.8321 | lr 3.00e-04 | norm   1.045 | 102 ms | 40,308 tok/s | epoch 2
+step  173 | loss 5.8571 | lr 3.00e-04 | norm   0.773 | 102 ms | 40,291 tok/s | epoch 2
+step  174 | loss 5.8662 | lr 3.00e-04 | norm   0.983 | 102 ms | 40,252 tok/s | epoch 2
+step  175 | val 6.0457
+step  175 | loss 5.7621 | lr 3.00e-04 | norm   0.863 | 102 ms | 40,268 tok/s | epoch 2
+step  176 | loss 5.6463 | lr 3.00e-04 | norm   0.894 | 102 ms | 40,313 tok/s | epoch 2
+step  177 | loss 5.6012 | lr 3.00e-04 | norm   1.150 | 102 ms | 40,265 tok/s | epoch 2
+step  178 | loss 5.6682 | lr 3.00e-04 | norm   1.066 | 102 ms | 40,271 tok/s | epoch 2
+step  179 | loss 5.8123 | lr 3.00e-04 | norm   1.025 | 102 ms | 40,326 tok/s | epoch 2
+step  180 | loss 5.8696 | lr 3.00e-04 | norm   0.996 | 102 ms | 40,344 tok/s | epoch 2
+step  181 | loss 5.8182 | lr 3.00e-04 | norm   1.131 | 102 ms | 40,290 tok/s | epoch 2
+step  182 | loss 5.6397 | lr 3.00e-04 | norm   1.124 | 102 ms | 40,279 tok/s | epoch 2
+step  183 | loss 5.8153 | lr 3.00e-04 | norm   1.102 | 102 ms | 40,317 tok/s | epoch 2
+step  184 | loss 5.6358 | lr 3.00e-04 | norm   1.041 | 102 ms | 40,351 tok/s | epoch 2
+step  185 | loss 5.4931 | lr 3.00e-04 | norm   0.997 | 101 ms | 40,382 tok/s | epoch 2
+step  186 | loss 5.5844 | lr 3.00e-04 | norm   1.072 | 101 ms | 40,380 tok/s | epoch 2
+step  187 | loss 5.6844 | lr 3.00e-04 | norm   1.054 | 102 ms | 40,267 tok/s | epoch 2
+step  188 | loss 5.4971 | lr 3.00e-04 | norm   1.179 | 102 ms | 40,040 tok/s | epoch 2
+step  189 | loss 5.5530 | lr 3.00e-04 | norm   1.023 | 102 ms | 39,982 tok/s | epoch 2
+step  190 | loss 5.8118 | lr 3.00e-04 | norm   1.058 | 102 ms | 40,212 tok/s | epoch 2
+step  191 | loss 5.6815 | lr 3.00e-04 | norm   0.982 | 102 ms | 40,281 tok/s | epoch 2
+step  192 | loss 5.5424 | lr 3.00e-04 | norm   0.904 | 102 ms | 40,331 tok/s | epoch 2
+step  193 | loss 5.4988 | lr 3.00e-04 | norm   1.105 | 102 ms | 40,325 tok/s | epoch 2
+step  194 | loss 5.5257 | lr 3.00e-04 | norm   0.911 | 102 ms | 40,332 tok/s | epoch 2
+step  195 | loss 5.4484 | lr 3.00e-04 | norm   0.969 | 102 ms | 40,347 tok/s | epoch 2
+step  196 | loss 5.5688 | lr 3.00e-04 | norm   1.028 | 102 ms | 40,332 tok/s | epoch 2
+step  197 | loss 5.4863 | lr 3.00e-04 | norm   0.829 | 102 ms | 40,324 tok/s | epoch 2
+step  198 | loss 5.8927 | lr 3.00e-04 | norm   1.419 | 102 ms | 40,269 tok/s | epoch 2
+step  199 | loss 5.8283 | lr 3.00e-04 | norm   1.389 | 102 ms | 40,273 tok/s | epoch 2
+step  200 | val 5.8698
+step  200 | loss 5.6212 | lr 3.00e-04 | norm   1.188 | 102 ms | 40,266 tok/s | epoch 2
+step  201 | loss 5.7687 | lr 3.00e-04 | norm   1.133 | 102 ms | 40,297 tok/s | epoch 2
+step  202 | loss 6.0869 | lr 3.00e-04 | norm   1.332 | 102 ms | 40,319 tok/s | epoch 2
+step  203 | loss 5.9043 | lr 3.00e-04 | norm   0.918 | 101 ms | 40,382 tok/s | epoch 2
+step  204 | loss 5.5760 | lr 3.00e-04 | norm   1.360 | 101 ms | 40,365 tok/s | epoch 2
+step  205 | loss 5.7127 | lr 3.00e-04 | norm   1.344 | 102 ms | 40,226 tok/s | epoch 2
+step  206 | loss 5.6296 | lr 3.00e-04 | norm   0.938 | 102 ms | 40,228 tok/s | epoch 2
+step  207 | loss 5.5754 | lr 3.00e-04 | norm   0.850 | 102 ms | 40,227 tok/s | epoch 2
+step  208 | loss 5.5950 | lr 3.00e-04 | norm   1.141 | 102 ms | 40,226 tok/s | epoch 2
+step  209 | loss 5.4944 | lr 3.00e-04 | norm   1.289 | 102 ms | 40,258 tok/s | epoch 2
+step  210 | loss 5.3295 | lr 3.00e-04 | norm   1.035 | 102 ms | 40,274 tok/s | epoch 2
+step  211 | loss 5.5191 | lr 3.00e-04 | norm   1.199 | 102 ms | 40,287 tok/s | epoch 2
+step  212 | loss 5.6373 | lr 3.00e-04 | norm   1.327 | 102 ms | 40,323 tok/s | epoch 2
+step  213 | loss 5.5359 | lr 3.00e-04 | norm   1.121 | 102 ms | 40,302 tok/s | epoch 2
+step  214 | loss 5.4928 | lr 3.00e-04 | norm   1.058 | 102 ms | 40,313 tok/s | epoch 2
+step  215 | loss 5.3056 | lr 3.00e-04 | norm   1.298 | 102 ms | 40,308 tok/s | epoch 2
+step  216 | loss 5.2075 | lr 3.00e-04 | norm   1.070 | 102 ms | 40,281 tok/s | epoch 2
+step  217 | loss 5.7838 | lr 3.00e-04 | norm   0.984 | 102 ms | 40,268 tok/s | epoch 2
+step  218 | loss 5.6605 | lr 3.00e-04 | norm   1.220 | 102 ms | 40,282 tok/s | epoch 3
+step  219 | loss 5.6566 | lr 3.00e-04 | norm   1.059 | 102 ms | 40,295 tok/s | epoch 3
+step  220 | loss 5.6671 | lr 3.00e-04 | norm   1.034 | 102 ms | 40,290 tok/s | epoch 3
+step  221 | loss 5.7243 | lr 3.00e-04 | norm   1.119 | 102 ms | 40,220 tok/s | epoch 3
+step  222 | loss 5.6841 | lr 3.00e-04 | norm   1.195 | 102 ms | 40,205 tok/s | epoch 3
+step  223 | loss 5.4336 | lr 3.00e-04 | norm   1.277 | 102 ms | 40,191 tok/s | epoch 3
+step  224 | loss 5.2668 | lr 3.00e-04 | norm   1.699 | 102 ms | 40,219 tok/s | epoch 3
+step  225 | val 5.6954
+step  225 | loss 5.2802 | lr 3.00e-04 | norm   1.106 | 102 ms | 40,190 tok/s | epoch 3
+step  226 | loss 5.2686 | lr 3.00e-04 | norm   1.069 | 102 ms | 40,292 tok/s | epoch 3
+step  227 | loss 5.3463 | lr 3.00e-04 | norm   0.954 | 102 ms | 40,305 tok/s | epoch 3
+step  228 | loss 5.2605 | lr 3.00e-04 | norm   0.918 | 102 ms | 40,314 tok/s | epoch 3
+step  229 | loss 5.4570 | lr 3.00e-04 | norm   0.812 | 102 ms | 40,227 tok/s | epoch 3
+step  230 | loss 5.4813 | lr 3.00e-04 | norm   1.173 | 102 ms | 40,166 tok/s | epoch 3
+step  231 | loss 5.5294 | lr 3.00e-04 | norm   1.794 | 102 ms | 40,209 tok/s | epoch 3
+step  232 | loss 5.4981 | lr 3.00e-04 | norm   1.318 | 102 ms | 40,238 tok/s | epoch 3
+step  233 | loss 5.3715 | lr 3.00e-04 | norm   1.257 | 102 ms | 40,262 tok/s | epoch 3
+step  234 | loss 5.3792 | lr 3.00e-04 | norm   1.060 | 102 ms | 40,285 tok/s | epoch 3
+step  235 | loss 5.1396 | lr 3.00e-04 | norm   1.044 | 102 ms | 40,317 tok/s | epoch 3
+step  236 | loss 5.1578 | lr 3.00e-04 | norm   0.972 | 101 ms | 40,360 tok/s | epoch 3
+step  237 | loss 5.4210 | lr 3.00e-04 | norm   1.015 | 102 ms | 40,270 tok/s | epoch 3
+step  238 | loss 5.1990 | lr 3.00e-04 | norm   0.985 | 102 ms | 40,261 tok/s | epoch 3
+step  239 | loss 5.4758 | lr 3.00e-04 | norm   1.076 | 102 ms | 40,303 tok/s | epoch 3
+step  240 | loss 5.1547 | lr 3.00e-04 | norm   1.335 | 102 ms | 40,269 tok/s | epoch 3
+step  241 | loss 5.4681 | lr 3.00e-04 | norm   0.870 | 102 ms | 40,183 tok/s | epoch 3
+step  242 | loss 5.5811 | lr 3.00e-04 | norm   0.886 | 102 ms | 40,288 tok/s | epoch 3
+step  243 | loss 5.6740 | lr 3.00e-04 | norm   0.873 | 102 ms | 40,293 tok/s | epoch 3
+step  244 | loss 5.6240 | lr 3.00e-04 | norm   0.864 | 102 ms | 40,304 tok/s | epoch 3
+step  245 | loss 5.4993 | lr 3.00e-04 | norm   0.923 | 102 ms | 40,333 tok/s | epoch 3
+step  246 | loss 5.5510 | lr 3.00e-04 | norm   0.886 | 102 ms | 40,337 tok/s | epoch 3
+step  247 | loss 5.5518 | lr 3.00e-04 | norm   0.877 | 102 ms | 40,323 tok/s | epoch 3
+step  248 | loss 5.4639 | lr 3.00e-04 | norm   0.919 | 102 ms | 40,317 tok/s | epoch 3
+step  249 | loss 5.3166 | lr 3.00e-04 | norm   0.917 | 102 ms | 40,275 tok/s | epoch 3
+step  250 | val 5.8213
+step  250 | loss 5.2776 | lr 3.00e-04 | norm   1.096 | 102 ms | 40,218 tok/s | epoch 3
+step  251 | loss 5.3258 | lr 3.00e-04 | norm   0.959 | 102 ms | 40,307 tok/s | epoch 3
+step  252 | loss 5.4960 | lr 3.00e-04 | norm   0.949 | 102 ms | 40,305 tok/s | epoch 3
+step  253 | loss 5.5424 | lr 3.00e-04 | norm   0.990 | 102 ms | 40,348 tok/s | epoch 3
+step  254 | loss 5.5164 | lr 3.00e-04 | norm   1.173 | 102 ms | 40,312 tok/s | epoch 3
+step  255 | loss 5.3329 | lr 3.00e-04 | norm   1.072 | 102 ms | 40,163 tok/s | epoch 3
+step  256 | loss 5.5021 | lr 3.00e-04 | norm   1.061 | 102 ms | 40,171 tok/s | epoch 3
+step  257 | loss 5.3457 | lr 3.00e-04 | norm   0.976 | 102 ms | 40,289 tok/s | epoch 3
+step  258 | loss 5.1854 | lr 3.00e-04 | norm   1.119 | 102 ms | 40,305 tok/s | epoch 3
+step  259 | loss 5.2887 | lr 3.00e-04 | norm   1.071 | 102 ms | 40,196 tok/s | epoch 3
+step  260 | loss 5.4460 | lr 3.00e-04 | norm   1.186 | 102 ms | 40,183 tok/s | epoch 3
+step  261 | loss 5.2035 | lr 3.00e-04 | norm   1.216 | 102 ms | 40,260 tok/s | epoch 3
+step  262 | loss 5.2649 | lr 3.00e-04 | norm   1.078 | 102 ms | 40,292 tok/s | epoch 3
+step  263 | loss 5.5430 | lr 3.00e-04 | norm   1.187 | 102 ms | 40,226 tok/s | epoch 3
+step  264 | loss 5.4076 | lr 3.00e-04 | norm   1.170 | 102 ms | 40,128 tok/s | epoch 3
+step  265 | loss 5.2609 | lr 3.00e-04 | norm   0.957 | 102 ms | 40,105 tok/s | epoch 3
+step  266 | loss 5.1951 | lr 3.00e-04 | norm   1.238 | 102 ms | 40,197 tok/s | epoch 3
+step  267 | loss 5.2765 | lr 3.00e-04 | norm   1.191 | 102 ms | 40,218 tok/s | epoch 3
+step  268 | loss 5.1819 | lr 3.00e-04 | norm   1.148 | 102 ms | 40,262 tok/s | epoch 3
+step  269 | loss 5.2998 | lr 3.00e-04 | norm   0.883 | 102 ms | 40,274 tok/s | epoch 3
+step  270 | loss 5.1923 | lr 3.00e-04 | norm   0.949 | 102 ms | 40,274 tok/s | epoch 3
+step  271 | loss 5.6140 | lr 3.00e-04 | norm   1.559 | 102 ms | 40,238 tok/s | epoch 3
+step  272 | loss 5.5496 | lr 3.00e-04 | norm   1.264 | 102 ms | 40,276 tok/s | epoch 3
+step  273 | loss 5.3851 | lr 3.00e-04 | norm   1.137 | 102 ms | 40,284 tok/s | epoch 3
+step  274 | loss 5.5475 | lr 3.00e-04 | norm   1.159 | 102 ms | 40,213 tok/s | epoch 3
+step  275 | val 5.6690
+step  275 | loss 5.8436 | lr 3.00e-04 | norm   1.038 | 102 ms | 40,057 tok/s | epoch 3
+step  276 | loss 5.6684 | lr 3.00e-04 | norm   1.055 | 102 ms | 40,106 tok/s | epoch 3
+step  277 | loss 5.3103 | lr 3.00e-04 | norm   1.066 | 102 ms | 40,199 tok/s | epoch 3
+step  278 | loss 5.4233 | lr 3.00e-04 | norm   1.147 | 102 ms | 40,297 tok/s | epoch 3
+step  279 | loss 5.4035 | lr 3.00e-04 | norm   0.892 | 102 ms | 40,331 tok/s | epoch 3
+step  280 | loss 5.3462 | lr 3.00e-04 | norm   0.919 | 102 ms | 40,316 tok/s | epoch 3
+step  281 | loss 5.3086 | lr 3.00e-04 | norm   1.157 | 102 ms | 40,269 tok/s | epoch 3
+step  282 | loss 5.1445 | lr 3.00e-04 | norm   1.268 | 102 ms | 40,247 tok/s | epoch 3
+step  283 | loss 5.0185 | lr 3.00e-04 | norm   1.095 | 102 ms | 40,323 tok/s | epoch 3
+step  284 | loss 5.2161 | lr 3.00e-04 | norm   1.135 | 102 ms | 40,291 tok/s | epoch 3
+step  285 | loss 5.3243 | lr 3.00e-04 | norm   1.285 | 102 ms | 40,170 tok/s | epoch 3
+step  286 | loss 5.2251 | lr 3.00e-04 | norm   1.074 | 102 ms | 40,234 tok/s | epoch 3
+step  287 | loss 5.1915 | lr 3.00e-04 | norm   1.032 | 102 ms | 40,211 tok/s | epoch 3
+step  288 | loss 5.0465 | lr 3.00e-04 | norm   1.359 | 102 ms | 40,237 tok/s | epoch 3
+step  289 | loss 4.9294 | lr 3.00e-04 | norm   1.027 | 102 ms | 40,301 tok/s | epoch 3
+step  290 | loss 5.5708 | lr 3.00e-04 | norm   1.042 | 102 ms | 40,242 tok/s | epoch 3
+step  291 | loss 5.4150 | lr 3.00e-04 | norm   1.183 | 102 ms | 40,146 tok/s | epoch 4
+step  292 | loss 5.4207 | lr 3.00e-04 | norm   1.113 | 102 ms | 40,076 tok/s | epoch 4
+step  293 | loss 5.3974 | lr 3.00e-04 | norm   1.128 | 102 ms | 40,160 tok/s | epoch 4
+step  294 | loss 5.4294 | lr 3.00e-04 | norm   1.109 | 102 ms | 40,171 tok/s | epoch 4
+step  295 | loss 5.4017 | lr 3.00e-04 | norm   1.126 | 102 ms | 40,161 tok/s | epoch 4
+step  296 | loss 5.1625 | lr 3.00e-04 | norm   1.132 | 102 ms | 40,181 tok/s | epoch 4
+step  297 | loss 4.9641 | lr 3.00e-04 | norm   1.356 | 102 ms | 40,165 tok/s | epoch 4
+step  298 | loss 5.0135 | lr 3.00e-04 | norm   1.050 | 102 ms | 40,136 tok/s | epoch 4
+step  299 | val 5.5465
+
+299 adım, 31 sn eğitim | görülen token 1,224,704 (~4,041,203 karakter, 4.06 epoch)
+tam val loss 5.5451 nats/token | 1.7926 nats/karakter
+örnek: ROMEO:
+
+'I
+For you that this's you her, we had you
+Lour of
+He
+To our death.
+NYC
+SABost:
+For they think I his good in the honour: by a
+And will
+
+ISIIA:
+He the heart
+'IABUUMUS:
+Thius is have make our world I one
