@@ -1,0 +1,3 @@
+loss / 4 evet  | büyük batch'e göre en büyük göreli fark 5.0e-16 | norm oranı 1.0000
+loss / 4 hayır | büyük batch'e göre en büyük göreli fark 3.0e+00 | norm oranı 4.0000
+bölmeyince gradyan tam 4 katı mı: True
